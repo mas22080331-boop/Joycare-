@@ -1,0 +1,145 @@
+/* Health Dashboard Styles */
+.health-container {
+    padding: 20px;
+}
+
+.health-status-card {
+    background: var(--ios-glass);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid var(--border-color);
+    border-radius: 24px;
+    padding: 20px;
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.health-status-main {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.health-status-title {
+    font-size: 13px;
+    color: var(--text-secondary);
+}
+
+.health-status-value {
+    font-size: 20px;
+    font-weight: 800;
+    color: var(--text-primary);
+}
+
+.health-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+    margin-bottom: 25px;
+}
+
+.vitals-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 20px;
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.vitals-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 12px;
+    color: var(--text-secondary);
+    font-weight: 600;
+}
+
+.vitals-header i {
+    font-size: 14px;
+}
+
+.vitals-value {
+    font-size: 24px;
+    font-weight: 900;
+    color: var(--text-primary);
+}
+
+.vitals-unit {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-secondary);
+    margin-left: 2px;
+}
+
+.vitals-trend {
+    font-size: 11px;
+    color: var(--success-green);
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+/* Medication List */
+.med-section {
+    margin-bottom: 30px;
+}
+
+.med-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 16px;
+    padding: 15px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 12px;
+}
+
+.med-icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+}
+
+.med-info {
+    flex: 1;
+}
+
+.med-name {
+    font-weight: 800;
+    font-size: 15px;
+    color: var(--text-primary);
+    margin-bottom: 2px;
+}
+
+.med-schedule {
+    font-size: 12px;
+    color: var(--text-secondary);
+}
+
+.med-check {
+    width: 28px;
+    height: 28px;
+    border: 2px solid var(--border-color);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.med-check.done {
+    background: var(--success-green);
+    border-color: var(--success-green);
+    color: white;
+}
