@@ -1,0 +1,241 @@
+/* Home Screen Styles */
+
+.header-blue {
+    background-color: #2151CD; /* Match Figma deep blue */
+    border-radius: 0 0 30px 30px;
+    padding: 20px;
+    padding-bottom: 60px; /* Space for absolute card */
+    position: relative;
+    margin-bottom: 50px;
+}
+
+.header-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 25px;
+}
+
+.user-avatar {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.greeting {
+    flex: 1;
+    margin-left: 15px;
+}
+
+.greeting-sub {
+    font-size: 13px;
+    color: rgba(255,255,255,0.8);
+    margin-bottom: 2px;
+}
+
+.greeting-main {
+    font-size: 18px;
+    font-weight: 700;
+    line-height: 1.2;
+}
+
+.icon-bell {
+    background-color: rgba(255,255,255,0.2);
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 18px;
+}
+
+.active-care-card {
+    background: linear-gradient(135deg, #1C51E6, #3B72FF);
+    border-radius: 20px;
+    padding: 15px;
+    position: absolute;
+    bottom: -40px;
+    left: 20px;
+    right: 20px;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+}
+
+.care-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.care-avatar-wrapper {
+    position: relative;
+}
+
+.care-avatar {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    border: 2px solid var(--primary-orange);
+}
+
+.status-dot {
+    position: absolute;
+    bottom: 2px;
+    right: 2px;
+    width: 12px;
+    height: 12px;
+    background-color: var(--success-green);
+    border-radius: 50%;
+    border: 2px solid #1C51E6;
+}
+
+.care-info {
+    flex: 1;
+    margin-left: 12px;
+}
+
+.care-title {
+    font-weight: 700;
+    font-size: 15px;
+    margin-bottom: 4px;
+}
+
+.care-desc {
+    font-size: 12px;
+    color: rgba(255,255,255,0.8);
+}
+
+.smile-icon {
+    font-size: 24px;
+    color: var(--primary-orange);
+    background-color: rgba(255, 159, 10, 0.2);
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn-care-action {
+    background-color: rgba(0,0,0,0.2);
+    border: none;
+    color: white;
+    width: 100%;
+    padding: 12px;
+    border-radius: 12px;
+    font-size: 13px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.home-content {
+    padding: 0 20px;
+}
+
+.about-card {
+    background-color: var(--bg-card);
+    border-radius: 20px;
+    padding: 20px;
+    margin-bottom: 25px;
+}
+
+.about-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+.about-header h3 {
+    font-size: 16px;
+    font-weight: 700;
+}
+
+.about-text {
+    font-size: 13px;
+    color: var(--text-secondary);
+    line-height: 1.5;
+    margin-bottom: 20px;
+}
+
+.section-title {
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 15px;
+}
+
+.services-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+    margin-bottom: 25px;
+}
+
+.service-card {
+    background-color: var(--bg-card);
+    border-radius: 20px;
+    padding: 20px 15px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    cursor: pointer;
+}
+
+.service-icon {
+    background-color: #2A2A2A;
+    width: 50px;
+    height: 50px;
+    border-radius: 15px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 24px;
+    margin-bottom: 12px;
+}
+
+.service-name {
+    font-weight: 700;
+    font-size: 14px;
+    margin-bottom: 5px;
+}
+
+.service-desc {
+    font-size: 11px;
+    color: var(--text-secondary);
+}
+
+.text-primary { color: #2B5EE2 !important; }
+.text-success { color: #34C759 !important; }
+.text-purple { color: #AF52DE !important; }
+.text-light { color: #E5E5EA !important; }
+
+.vip-badge {
+    position: absolute;
+    top: 0;
+    right: 0;
+    background-color: var(--primary-orange);
+    color: black;
+    font-size: 10px;
+    font-weight: 800;
+    padding: 4px 8px;
+    border-radius: 0 20px 0 10px;
+}
+
+.section-header-flex {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.text-link {
+    color: var(--primary-blue);
+    font-size: 13px;
+    text-decoration: none;
+    font-weight: 600;
+}

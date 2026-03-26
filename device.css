@@ -1,0 +1,88 @@
+/* Device Frame Simulation (iPhone 15 Pro) */
+
+body {
+    background-color: #000; /* Darker background outside the device */
+}
+
+#device-frame {
+    width: 430px; /* iPhone 15 Pro Max width */
+    height: 932px; /* iPhone 15 Pro Max height */
+    padding: 15px; /* Bezel size */
+    background-color: #2b2b2b; /* Bezel color */
+    border-radius: 55px; /* Outer curve */
+    box-shadow: 0 0 50px rgba(255, 255, 255, 0.1), inset 0 0 10px rgba(0,0,0,0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    margin: 20px 0;
+}
+
+#app-container {
+    width: 100%;
+    height: 100%;
+    background-color: var(--bg-dark);
+    border-radius: 40px; /* Inner screen curve */
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Dynamic Island Notch */
+.dynamic-island {
+    position: absolute;
+    top: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 120px;
+    height: 35px;
+    background-color: #000;
+    border-radius: 20px;
+    z-index: 10000;
+}
+
+/* Status Bar */
+.status-bar {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 50px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 30px;
+    font-size: 15px;
+    font-weight: 600;
+    color: white;
+    z-index: 9999;
+    pointer-events: none;
+}
+
+.status-left { margin-top: 5px; }
+.status-right { display: flex; gap: 5px; margin-top: 5px; align-items: center; }
+
+/* Home Indicator */
+.home-indicator {
+    position: absolute;
+    bottom: 8px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 140px;
+    height: 5px;
+    background-color: white;
+    border-radius: 10px;
+    z-index: 9999;
+}
+
+/* Adjust screens to account for safe areas */
+.screen {
+    padding-top: 50px; /* Status bar space */
+    padding-bottom: calc(var(--bottom-nav-height) + 20px); /* Home indicator space */
+}
+
+/* Hide bottom nav on login screen */
+#screen-login {
+    padding-bottom: 20px;
+}
