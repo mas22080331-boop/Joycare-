@@ -1,0 +1,1584 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>JoyCare - Cháu Ơi</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="./css/index.css">
+    <link rel="stylesheet" href="./css/home.css">
+    <link rel="stylesheet" href="./css/booking.css">
+    <link rel="stylesheet" href="./css/tracking.css">
+    <link rel="stylesheet" href="./css/device.css">
+    <link rel="stylesheet" href="./css/login.css">
+    <link rel="stylesheet" href="./css/home-phase2.css">
+    <link rel="stylesheet" href="./css/profile.css">
+    <link rel="stylesheet" href="./css/call.css">
+</head>
+
+<body>
+
+    <div id="device-frame">
+        <div id="app-container">
+            <div class="status-bar">
+                <div class="status-left">9:41</div>
+                <div class="status-right">
+                    <i class="fa-solid fa-signal" style="font-size: 12px;"></i>
+                    <i class="fa-solid fa-wifi" style="font-size: 12px;"></i>
+                    <i class="fa-solid fa-battery-full" style="font-size: 16px;"></i>
+                </div>
+            </div>
+            <div class="dynamic-island"></div>
+
+            <!-- 0. Login Screen -->
+            <div id="screen-login" class="screen active">
+                <div class="login-header">
+                    <div class="login-logo"><i class="fa-solid fa-heart-pulse"></i></div>
+                    <div class="login-title">JoyCare</div>
+                    <div class="login-subtitle">Đăng nhập tài khoản</div>
+                </div>
+
+                <div class="login-card">
+                    <div class="login-card-title">Đăng nhập</div>
+                    <div class="login-form">
+                        <div class="login-input-wrapper">
+                            <input type="text" class="login-input" placeholder="Tên đăng nhập">
+                        </div>
+                        <div class="login-input-wrapper">
+                            <input type="password" class="login-input" placeholder="Mật khẩu">
+                        </div>
+                    </div>
+                    <button class="btn-login-main" onclick="app.navigate('home')">Đăng nhập</button>
+                    <button class="btn-login-outline" onclick="app.navigate('register')">Tạo tài khoản</button>
+
+                    <div style="margin-top: 15px;">
+                        <button onclick="app.showVNeIDScan()"
+                            style="width: 100%; background: #b71c1c; color: var(--text-primary); border: none; border-radius: 25px; padding: 12px; font-size: 14px; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px;">
+                            <img src="https://vneid.gov.vn/assets/images/logo.png"
+                                style="height: 20px; filter: brightness(0) invert(1);" alt="VNeID">
+                            Đăng nhập bằng VNeID
+                        </button>
+                    </div>
+
+                    <div class="divider">Hoặc</div>
+                    <a href="#" onclick="app.navigate('home')" class="google-login-link">
+                        <i class="fa-brands fa-google google-icon"></i> Đăng nhập bằng Google
+                    </a>
+                </div>
+            </div>
+
+            <!-- NFC Verify Modal (Top-Centered) -->
+            <div id="nfc-modal"
+                style="display: none; position: absolute; top: 60px; left: 50%; transform: translateX(-50%); width: 90%; background: #1e1e1e; border-radius: 24px; padding: 20px; z-index: 10005; box-shadow: 0 10px 40px rgba(0,0,0,0.5); text-align: center; border: 1px solid #333;">
+                <div
+                    style="width: 40px; height: 4px; background: #444; border-radius: 2px; margin: -5px auto 15px auto;">
+                </div>
+                <div
+                    style="width: 60px; height: 60px; background: rgba(43,94,226,0.15); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 15px;">
+                    <i class="fa-solid fa-nfc-symbol" style="color: #2B5EE2; font-size: 24px;"></i>
+                </div>
+                <h3 style="color: var(--text-primary); font-size: 17px; margin-bottom: 8px;">Sẵn sàng quét</h3>
+                <p style="color: #888; font-size: 13px; margin-bottom: 20px;">Giữ mặt sau CCCD gắn chip sát vào phần
+                    trên của điện thoại</p>
+                <div
+                    style="width: 200px; height: 120px; border: 2px dashed #2B5EE2; border-radius: 12px; margin: 0 auto 20px; position: relative; overflow: hidden; display: flex; align-items: center; justify-content: center;">
+                    <i class="fa-solid fa-address-card" style="color: #444; font-size: 60px;"></i>
+                    <div id="nfc-scan-line"
+                        style="position: absolute; top: 0; left: 0; width: 100%; height: 2px; background: #2B5EE2; box-shadow: 0 0 10px #2B5EE2; animation: scanNfc 2s infinite linear; display: none;">
+                    </div>
+                </div>
+                <button onclick="document.getElementById('nfc-modal').style.display = 'none'"
+                    style="width: 100%; background: #333; color: var(--text-primary); border: none; border-radius: 12px; padding: 12px; font-weight: 600; cursor: pointer;">Hủy</button>
+            </div>
+
+            <!-- 1. Home Screen -->
+            <div id="screen-home" class="screen">
+                <div class="header-blue">
+                    <!-- Premium Background Patterns -->
+                    <div class="header-patterns">
+                        <div class="pattern-circle pattern-1"></div>
+                        <div class="pattern-circle pattern-2"></div>
+                        <div class="pattern-circle pattern-3"></div>
+                    </div>
+
+                    <div class="header-top">
+                        <img src="https://i.pravatar.cc/150?img=5" class="user-avatar" alt="User">
+                        <div class="greeting">
+                            <div class="greeting-sub">Chào buổi sáng! 👋</div>
+                            <div class="greeting-main"
+                                style="color: var(--text-primary); font-size: 20px; font-weight: 800; line-height: 1.2;">
+                                JoyCare có
+                                thể giúp gì<br>cho bạn hôm nay?</div>
+                            <div
+                                style="font-size:11px;color: var(--text-secondary);margin-top:6px;display:flex;align-items:center;gap:6px;">
+                                <span>📍 Hà Nội</span>
+                                <span>•</span>
+                                <span style="color:#FFD700;font-weight:700;"><i class="fa-solid fa-crown"
+                                        style="font-size:9px;"></i> Thành viên Vàng</span>
+                            </div>
+                        </div>
+                        <div style="display: flex; gap: 10px;">
+                            <div class="icon-bell" onclick="app.toggleTheme()" id="theme-toggle-btn"
+                                style="position:relative;cursor:pointer;">
+                                <i id="theme-icon" class="fa-solid fa-moon"></i>
+                            </div>
+                            <div class="icon-bell" onclick="app.toggleNotifications()"
+                                style="position:relative;cursor:pointer;">
+                                <i class="fa-regular fa-bell"></i>
+                                <span id="notif-badge"
+                                    style="position:absolute;top:-2px;right:-2px;width:16px;height:16px;background:#FF3B30;border-radius:50%;font-size:9px;color: var(--text-primary);display:flex;align-items:center;justify-content:center;font-weight:700;border:2px solid #2151CD;">3</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- New Wallet & Points Card -->
+                    <div class="wallet-balance-card">
+                        <div class="balance-item">
+                            <span class="balance-label">Số dư JoyPay</span>
+                            <div class="balance-value">
+                                <i class="fa-solid fa-wallet joypay-color"></i>
+                                <span id="header-balance">1.250.000đ</span>
+                            </div>
+                        </div>
+                        <div class="balance-divider"></div>
+                        <div class="balance-item">
+                            <span class="balance-label">JoyPoints</span>
+                            <div class="balance-value">
+                                <i class="fa-solid fa-coins joypoints-color"></i>
+                                <span id="header-points">2.450</span>
+                            </div>
+                        </div>
+                        <button class="btn-topup">Nạp tiền</button>
+                    </div>
+                </div>
+
+                <!-- Notification Panel -->
+                <div id="notif-panel"
+                    style="display:none;position:absolute;top:72px;right:12px;width:88%;max-width:320px;background:#1c1c2e;border-radius:20px;box-shadow:0 12px 40px rgba(0,0,0,0.5);z-index:9999;overflow:hidden;border: 1px solid var(--border-color);">
+                    <!-- Header -->
+                    <div
+                        style="display:flex;align-items:center;justify-content:space-between;padding:16px 18px 12px;border-bottom: 1px solid var(--border-color);">
+                        <div
+                            style="font-size:15px;font-weight:800;color: var(--text-primary); font-family: 'Outfit', sans-serif;">
+                            Thông báo 🔔</div>
+                        <div style="display:flex;align-items:center;gap:12px;">
+                            <span onclick="app.clearNotifications()"
+                                style="font-size:11px;color:#007AFF;cursor:pointer;font-weight:600;">Xóa tất cả</span>
+                            <i class="fa-solid fa-xmark" style="color:#888;cursor:pointer;font-size:16px;"
+                                onclick="app.toggleNotifications()"></i>
+                        </div>
+                    </div>
+                    <!-- Notifications List -->
+                    <div id="notif-list" style="max-height:320px;overflow-y:auto;">
+                        <!-- Voucher 1 -->
+                        <div
+                            style="display:flex;gap:12px;padding:14px 18px;border-bottom:1px solid rgba(255,255,255,0.05);background:rgba(255,149,0,0.06);">
+                            <div
+                                style="width:42px;height:42px;background:linear-gradient(135deg,#FF9500,#FF6B00);border-radius:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                                <i class="fa-solid fa-ticket" style="color: var(--text-primary);font-size:18px;"></i>
+                            </div>
+                            <div style="flex:1;">
+                                <div
+                                    style="font-size:13px;font-weight:700;color: var(--text-primary);margin-bottom:3px;">
+                                    Giảm 20% gói
+                                    Joy-Home 🎉</div>
+                                <div style="font-size:11px;color:#aaa;line-height:1.4;">Dành riêng cho khách hàng mới.
+                                    Áp dụng t ừ nay đến 31/03/2026.</div>
+                                <div style="font-size:10px;color:#FF9500;margin-top:4px;font-weight:600;">Nhận ngay
+                                    &rarr;</div>
+                            </div>
+                        </div>
+                        <!-- Voucher 2 -->
+                        <div
+                            style="display:flex;gap:12px;padding:14px 18px;border-bottom:1px solid rgba(255,255,255,0.05);background:rgba(230,57,70,0.06);">
+                            <div
+                                style="width:42px;height:42px;background:linear-gradient(135deg,#e63946,#c1121f);border-radius:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                                <i class="fa-solid fa-tag" style="color: var(--text-primary);font-size:18px;"></i>
+                            </div>
+                            <div style="flex:1;">
+                                <div
+                                    style="font-size:13px;font-weight:700;color: var(--text-primary);margin-bottom:3px;">
+                                    Flash Sale –
+                                    Joy-Hospital giảm 15%</div>
+                                <div style="font-size:11px;color:#aaa;line-height:1.4;">Chỉ áp dụng 24h hôm nay. Được
+                                    giảm tối đa 33.000đ.</div>
+                                <div style="font-size:10px;color:#e63946;margin-top:4px;font-weight:600;">Còn 18 giờ ⌛ →
+                                    Đặt ngay</div>
+                            </div>
+                        </div>
+                        <!-- Referral -->
+                        <div
+                            style="display:flex;gap:12px;padding:14px 18px;border-bottom:1px solid rgba(255,255,255,0.05);">
+                            <div
+                                style="width:42px;height:42px;background:linear-gradient(135deg,#34C759,#248A3D);border-radius:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                                <i class="fa-solid fa-users" style="color: var(--text-primary);font-size:16px;"></i>
+                            </div>
+                            <div style="flex:1;">
+                                <div
+                                    style="font-size:13px;font-weight:700;color: var(--text-primary);margin-bottom:3px;">
+                                    Giới thiệu
+                                    bạn bè, nhận 50.000đ!</div>
+                                <div style="font-size:11px;color:#aaa;line-height:1.4;">Chia sẻ mã giới thiệu của bạn.
+                                    Bạn và bạn bè cùng được thưởng.</div>
+                                <div style="font-size:10px;color:#34C759;margin-top:4px;font-weight:600;">Sao chép mã:
+                                    JOY-WELCOME</div>
+                            </div>
+                        </div>
+                        <!-- Update News -->
+                        <div style="display:flex;gap:12px;padding:14px 18px;">
+                            <div
+                                style="width:42px;height:42px;background:linear-gradient(135deg,#007AFF,#0044CC);border-radius:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                                <i class="fa-solid fa-circle-info"
+                                    style="color: var(--text-primary);font-size:18px;"></i>
+                            </div>
+                            <div style="flex:1;">
+                                <div
+                                    style="font-size:13px;font-weight:700;color: var(--text-primary);margin-bottom:3px;">
+                                    Cập nhật:
+                                    Tính năng Nhật ký trực tiếp 🌟</div>
+                                <div style="font-size:11px;color:#aaa;line-height:1.4;">Nay JoyPal có thể gửi ảnh & cập
+                                    nhật trực tiếp đến bạn trong lúc chăm sóc.</div>
+                                <div style="font-size:10px;color:#007AFF;margin-top:4px;font-weight:600;">Tìm hiểu thêm
+                                    &rarr;</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="home-content">
+                    <div class="promo-banner">
+                        <div class="promo-info">
+                            <h3>Giảm 20% gói Joy-Home</h3>
+                            <p>Dành riêng cho khách hàng mới</p>
+                        </div>
+                        <button class="btn-promo-claim">Nhận ngay</button>
+                    </div>
+
+                    <h3 class="section-title">Các dịch vụ cung cấp</h3>
+                    <div class="services-grid">
+                        <div class="service-card" onclick="app.showServiceDetail('hospital')">
+                            <div class="service-icon service-icon-hospital"><i class="fa-solid fa-hospital-user"></i>
+                            </div>
+                            <div class="service-name">Joy-Hospital</div>
+                            <div class="service-desc">Tháp tùng đi viện</div>
+                            <div class="service-price">110k/h</div>
+                        </div>
+                        <div class="service-card" onclick="app.showServiceDetail('vip')">
+                            <div class="vip-badge">VIP</div>
+                            <div class="service-icon service-icon-vip"><i class="fa-solid fa-crown"></i></div>
+                            <div class="service-name">Hospital VIP</div>
+                            <div class="service-desc">Trọn gói & Live</div>
+                            <div class="service-price">450k/ca</div>
+                        </div>
+                        <div class="service-card" onclick="app.showServiceDetail('home')">
+                            <div class="service-icon service-icon-home"><i class="fa-solid fa-hand-holding-heart"></i>
+                            </div>
+                            <div class="service-name">Joy-Home</div>
+                            <div class="service-desc">Trò chuyện</div>
+                            <div class="service-price">70k/h</div>
+                        </div>
+                        <div class="service-card" onclick="app.showServiceDetail('tech')">
+                            <div class="service-icon service-icon-tech"><i class="fa-solid fa-laptop-code"></i></div>
+                            <div class="service-name">Joy-Tech</div>
+                            <div class="service-desc">Gia sư số</div>
+                            <div class="service-price">70k/h</div>
+                        </div>
+                        <div class="service-card" onclick="app.showServiceDetail('event')">
+                            <div class="service-icon service-icon-event"><i class="fa-solid fa-champagne-glasses"></i>
+                            </div>
+                            <div class="service-name">Joy-Event</div>
+                            <div class="service-desc">Sự kiện</div>
+                            <div class="service-price">90k/h</div>
+                        </div>
+                        <div class="service-card" onclick="app.showServiceDetail('meal')">
+                            <div class="service-icon service-icon-meal"><i class="fa-solid fa-bowl-food"></i></div>
+                            <div class="service-name">Joy-Meal</div>
+                            <div class="service-desc">Bữa ăn</div>
+                            <div class="service-price">90k/h</div>
+                        </div>
+                    </div>
+
+                    <!-- JoyPal Introduction Section -->
+                    <h3 class="section-title mt-4">Giới thiệu JoyPal</h3>
+                    <div
+                        style="display: flex; gap: 12px; overflow-x: auto; padding-bottom: 10px; scrollbar-width: none;">
+                        <div
+                            style="min-width: 160px; background: var(--bg-card); border-radius: 16px; padding: 15px; text-align: center; flex-shrink: 0; border: 1px solid var(--border-color);">
+                            <img src="https://i.pravatar.cc/150?img=11"
+                                style="width: 64px; height: 64px; border-radius: 50%; border: 3px solid var(--primary-orange); margin-bottom: 8px;">
+                            <div style="font-weight: bold; color: var(--text-primary); font-size: 14px;">Tuấn, 21</div>
+                            <div style="font-size: 11px; color: var(--text-secondary); margin-bottom: 6px;">Đại học Y Hà
+                                Nội</div>
+                            <div style="color: #ffd700; font-size: 13px;">★ 4.9</div>
+                            <div style="margin-top: 6px;"><span
+                                    style="background: rgba(52,199,89,0.15); color: var(--success-green); font-size: 10px; padding: 3px 8px; border-radius: 8px; font-weight: bold;">VNeID
+                                    ✓</span></div>
+                        </div>
+                        <div
+                            style="min-width: 160px; background: var(--bg-card); border-radius: 16px; padding: 15px; text-align: center; flex-shrink: 0; border: 1px solid var(--border-color);">
+                            <img src="https://i.pravatar.cc/150?img=5"
+                                style="width: 64px; height: 64px; border-radius: 50%; border: 3px solid var(--primary-blue); margin-bottom: 8px;">
+                            <div style="font-weight: bold; color: var(--text-primary); font-size: 14px;">My, 22</div>
+                            <div style="font-size: 11px; color: var(--text-secondary); margin-bottom: 6px;">ĐH Điều
+                                dưỡng HN</div>
+                            <div style="color: #ffd700; font-size: 13px;">★ 4.8</div>
+                            <div style="margin-top: 6px;"><span
+                                    style="background: rgba(52,199,89,0.15); color: var(--success-green); font-size: 10px; padding: 3px 8px; border-radius: 8px; font-weight: bold;">VNeID
+                                    ✓</span></div>
+                        </div>
+                        <div
+                            style="min-width: 160px; background: var(--bg-card); border-radius: 16px; padding: 15px; text-align: center; flex-shrink: 0; border: 1px solid var(--border-color);">
+                            <img src="https://i.pravatar.cc/150?img=15"
+                                style="width: 64px; height: 64px; border-radius: 50%; border: 3px solid var(--primary-orange); margin-bottom: 8px;">
+                            <div style="font-weight: bold; color: var(--text-primary); font-size: 14px;">Hùng, 23</div>
+                            <div style="font-size: 11px; color: var(--text-secondary); margin-bottom: 6px;">Đại học Y Hà
+                                Nội</div>
+                            <div style="color: #ffd700; font-size: 13px;">★ 4.7</div>
+                            <div style="margin-top: 6px;"><span
+                                    style="background: rgba(52,199,89,0.15); color: var(--success-green); font-size: 10px; padding: 3px 8px; border-radius: 8px; font-weight: bold;">VNeID
+                                    ✓</span></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Service Detail Modal -->
+                <div class="vneid-overlay" id="service-modal" style="z-index: 10002; display: none;">
+                    <div
+                        style="background-color: var(--bg-card); width: 100%; border-radius: 20px; overflow: hidden; display: flex; flex-direction: column;">
+                        <div
+                            style="padding: 20px; background-color: var(--bg-dark); display: flex; justify-content: space-between; align-items: center;">
+                            <h3 id="modal-service-title" style="margin: 0;">Service Title</h3>
+                            <i class="fa-solid fa-xmark text-secondary" style="font-size: 20px; cursor: pointer;"
+                                onclick="app.closeServiceDetail()"></i>
+                        </div>
+                        <div style="padding: 20px; text-align: left; max-height: 60vh; overflow-y: auto;">
+                            <div id="modal-service-badge"
+                                style="display: none; background-color: var(--primary-orange); color: var(--text-primary); padding: 4px 10px; border-radius: 10px; font-size: 12px; font-weight: bold; width: fit-content; margin-bottom: 10px;">
+                                VIP</div>
+                            <div id="modal-service-tagline" class="text-orange fw-bold mb-2">Tagline</div>
+                            <p id="modal-service-desc" class="text-secondary text-sm mb-3">Desc</p>
+                            <div class="fw-bold mb-2" style="font-size: 15px;">Dịch vụ bao gồm:</div>
+                            <ul id="modal-service-features"
+                                style="padding-left: 20px; color: var(--text-primary); font-size: 14px; line-height: 1.6;">
+                            </ul>
+                        </div>
+                        <div
+                            style="padding: 15px 20px; background-color: var(--bg-dark); border-top: 1px solid var(--border-color);">
+                            <button class="btn-primary" onclick="app.closeServiceDetail(); app.navigate('booking')">Đặt
+                                lịch dịch vụ này</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 2. Booking Screen -->
+            <div id="screen-booking" class="screen">
+                <div class="top-bar">
+                    <i class="fa-solid fa-chevron-left back-btn" onclick="app.navigate('home')"></i>
+                    <h2>Đặt lịch JoyPal</h2>
+                    <div style="width: 24px;"></div>
+                </div>
+
+                <div class="booking-form p-3">
+                    <div class="card relative form-card">
+                        <!-- Service Selection Grid -->
+                        <div class="form-row border-bottom pb-3 mb-3">
+                            <span class="text-sm text-secondary mb-3 d-block"><i
+                                    class="fa-solid fa-list-check text-green"></i> Chọn dịch vụ</span>
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                                <label
+                                    style="display: flex; align-items: flex-start; gap: 8px; font-weight: bold; cursor: pointer; color: var(--text-primary); background: var(--bg-dark); padding: 12px; border-radius: 10px; border: 1px solid var(--border-color);"><input
+                                        type="radio" name="booking-service" checked
+                                        style="accent-color: var(--primary-orange); width: 16px; height: 16px; margin-top:2px;"
+                                        onchange="app.toggleVipPicker('home')"> <span
+                                        style="font-size: 13px;">Joy-Home<br><span
+                                            style="color:var(--text-secondary);font-size:11px;font-weight:normal;">70k/h</span></span></label>
+                                <label
+                                    style="display: flex; align-items: flex-start; gap: 8px; font-weight: bold; cursor: pointer; color: var(--text-primary); background: var(--bg-dark); padding: 12px; border-radius: 10px; border: 1px solid var(--border-color);"><input
+                                        type="radio" name="booking-service"
+                                        style="accent-color: var(--primary-orange); width: 16px; height: 16px; margin-top:2px;"
+                                        onchange="app.toggleVipPicker('hospital')"> <span
+                                        style="font-size: 13px;">Joy-Hospital<br><span
+                                            style="color:var(--text-secondary);font-size:11px;font-weight:normal;">110k/h</span></span></label>
+                                <label
+                                    style="display: flex; align-items: flex-start; gap: 8px; font-weight: bold; cursor: pointer; color: var(--text-primary); background: var(--bg-dark); padding: 12px; border-radius: 10px; border: 1px solid var(--primary-orange);"><input
+                                        type="radio" name="booking-service"
+                                        style="accent-color: var(--primary-orange); width: 16px; height: 16px; margin-top:2px;"
+                                        onchange="app.toggleVipPicker('vip')"> <span style="font-size: 13px;">Hospital
+                                        VIP<br><span
+                                            style="color:var(--text-secondary);font-size:11px;font-weight:normal;">450k/ca</span></span></label>
+                                <label
+                                    style="display: flex; align-items: flex-start; gap: 8px; font-weight: bold; cursor: pointer; color: var(--text-primary); background: var(--bg-dark); padding: 12px; border-radius: 10px; border: 1px solid var(--border-color);"><input
+                                        type="radio" name="booking-service"
+                                        style="accent-color: var(--primary-orange); width: 16px; height: 16px; margin-top:2px;"
+                                        onchange="app.toggleVipPicker('tech')"> <span
+                                        style="font-size: 13px;">Joy-Tech<br><span
+                                            style="color:var(--text-secondary);font-size:11px;font-weight:normal;">70k/h</span></span></label>
+                                <label
+                                    style="display: flex; align-items: flex-start; gap: 8px; font-weight: bold; cursor: pointer; color: var(--text-primary); background: var(--bg-dark); padding: 12px; border-radius: 10px; border: 1px solid var(--border-color);"><input
+                                        type="radio" name="booking-service"
+                                        style="accent-color: var(--primary-orange); width: 16px; height: 16px; margin-top:2px;"
+                                        onchange="app.toggleVipPicker('event')"> <span
+                                        style="font-size: 13px;">Joy-Event<br><span
+                                            style="color:var(--text-secondary);font-size:11px;font-weight:normal;">90k/h</span></span></label>
+                                <label
+                                    style="display: flex; align-items: flex-start; gap: 8px; font-weight: bold; cursor: pointer; color: var(--text-primary); background: var(--bg-dark); padding: 12px; border-radius: 10px; border: 1px solid var(--border-color);"><input
+                                        type="radio" name="booking-service"
+                                        style="accent-color: var(--primary-orange); width: 16px; height: 16px; margin-top:2px;"
+                                        onchange="app.toggleVipPicker('meal')"> <span
+                                        style="font-size: 13px;">Joy-Meal<br><span
+                                            style="color:var(--text-secondary);font-size:11px;font-weight:normal;">90k/h</span></span></label>
+                            </div>
+                        </div>
+
+                        <!-- Location Input -->
+                        <div class="form-row border-bottom pb-3 mb-3">
+                            <span class="text-sm text-secondary d-block"><i
+                                    class="fa-solid fa-location-dot mt-1 text-primary"></i> Địa chỉ nơi JoyPal sẽ
+                                đến</span>
+                            <div class="input-box"
+                                style="padding: 0; display: flex; align-items: center; background: var(--bg-dark); border-radius: 10px; margin-top: 10px; padding: 5px 15px;">
+                                <input type="text" placeholder="Nhập địa chỉ hoặc vị trí..."
+                                    value="Số 10, Ngõ 1, Tôn Thất Tùng, Hà Nội"
+                                    style="width: 100%; background: transparent; border: none; color: var(--text-primary); font-size: 14px; outline: none; font-weight: bold; font-family: 'Inter', sans-serif;">
+                                <i class="fa-solid fa-location-crosshairs text-blue"
+                                    style="font-size: 18px; cursor: pointer;"
+                                    onclick="alert('Đã cập nhật vị trí hiện tại của bạn!')"></i>
+                            </div>
+                        </div>
+
+                        <!-- Target Person -->
+                        <div class="form-row border-bottom pb-3">
+                            <div class="target-icon"><i class="fa-regular fa-user"></i></div>
+                            <div class="target-info">
+                                <span class="text-xs text-secondary">Dành cho:</span>
+                                <div class="fw-bold fs-md">Bác Nguyễn Văn A (Bố)</div>
+                            </div>
+                            <button class="btn-change">Thay đổi</button>
+                        </div>
+
+                        <!-- VIP JoyPal Selection -->
+                        <div id="vip-joypal-selection" class="form-row border-bottom pb-3 mb-3"
+                            style="display: none; padding-top: 15px;">
+                            <span class="text-sm text-secondary d-block mb-3"><i
+                                    class="fa-solid fa-star text-orange"></i> Chọn JoyPal VIP (Hoặc tự động ghép)</span>
+                            <div style="display: flex; gap: 15px; overflow-x: auto; padding-bottom: 5px;">
+                                <label
+                                    style="display: flex; flex-direction: column; align-items: center; gap: 5px; cursor: pointer;">
+                                    <input type="radio" name="vip-joypal-choice" value="auto" checked
+                                        style="accent-color: var(--primary-orange);">
+                                    <div
+                                        style="width: 50px; height: 50px; border-radius: 50%; background: var(--bg-dark); border: 2px solid var(--border-color); display: flex; align-items: center; justify-content: center; font-size: 20px;">
+                                        <i class="fa-solid fa-bolt text-orange"></i>
+                                    </div>
+                                    <span style="font-size: 12px; font-weight: bold; color: var(--text-primary);">Tự
+                                        động</span>
+                                </label>
+                                <label
+                                    style="display: flex; flex-direction: column; align-items: center; gap: 5px; cursor: pointer;">
+                                    <input type="radio" name="vip-joypal-choice" value="tuan"
+                                        style="accent-color: var(--primary-orange);">
+                                    <img src="https://i.pravatar.cc/150?img=11"
+                                        style="width: 50px; height: 50px; border-radius: 50%; border: 2px solid var(--primary-blue);">
+                                    <span style="font-size: 12px; color: var(--text-primary);">Tuấn ⭐4.9</span>
+                                </label>
+                                <label
+                                    style="display: flex; flex-direction: column; align-items: center; gap: 5px; cursor: pointer;">
+                                    <input type="radio" name="vip-joypal-choice" value="my"
+                                        style="accent-color: var(--primary-orange);">
+                                    <img src="https://i.pravatar.cc/150?img=5"
+                                        style="width: 50px; height: 50px; border-radius: 50%; border: 2px solid var(--primary-blue);">
+                                    <span style="font-size: 12px; color: var(--text-primary);">My ⭐4.9</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Date -->
+                        <div class="flex-between py-3 border-bottom gap-2">
+                            <div class="flex-1">
+                                <span class="text-sm text-secondary mb-1 d-block"><i class="fa-regular fa-calendar"
+                                        style="color: var(--text-primary);"></i> Ngày phục vụ</span>
+                                <div class="input-box" style="padding: 0;">
+                                    <input type="date" id="booking-date" value="2026-05-15"
+                                        style="width: 100%; background: transparent; border: none; color: var(--text-primary); padding: 15px; font-size: 15px; outline: none; font-weight: bold; font-family: 'Inter', sans-serif; color-scheme: dark;">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="flex-between py-3 gap-2 border-bottom">
+                            <div class="flex-1">
+                                <span class="text-sm text-secondary mb-1 d-block"><i class="fa-regular fa-clock"></i>
+                                    Giờ bắt đầu</span>
+                                <div class="input-box" style="padding: 0;">
+                                    <input id="booking-time" type="text" placeholder="VD: 08:30" value="08:00"
+                                        style="width: 100%; background: transparent; border: none; color: var(--text-primary); padding: 15px; font-size: 15px; outline: none; font-weight: bold; font-family: 'Inter', sans-serif;">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-row py-3">
+                            <div class="w-100">
+                                <span class="text-sm text-secondary mb-1 d-block"><i
+                                        class="fa-solid fa-hourglass-half"></i> Thời lượng dự kiến</span>
+                                <select id="booking-duration"
+                                    style="width: 100%; background: var(--bg-dark); border: 1px solid var(--border-color); color: var(--text-primary); padding: 15px; font-size: 15px; border-radius: 10px; outline: none;">
+                                    <option value="1">1 giờ (Tính theo thực tế)</option>
+                                    <option value="2">2 giờ</option>
+                                    <option value="3">3 giờ</option>
+                                    <option value="4">4 giờ</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Address row -->
+                        <div class="form-row py-3 border-top">
+                            <div class="w-100">
+                                <span class="text-sm text-secondary mb-1 d-block"><i class="fa-solid fa-location-dot"
+                                        style="color:var(--primary-orange);"></i> Địa chỉ cần chăm sóc</span>
+                                <div class="input-box" style="padding:0;position:relative;">
+                                    <input type="text" id="booking-address"
+                                        placeholder="VD: 10 Tôn Thất Tùng, Đống Đa, Hà Nội"
+                                        value="10 Tôn Thất Tùng, Đống Đa, Hà Nội"
+                                        style="width:100%;background:transparent;border:none;color: var(--text-primary);padding:14px 40px 14px 15px;font-size:14px;outline:none;font-family:'Inter',sans-serif;box-sizing:border-box;">
+                                    <i class="fa-solid fa-location-crosshairs"
+                                        style="position:absolute;right:14px;top:50%;transform:translateY(-50%);color:var(--primary-orange);font-size:16px;cursor:pointer;"
+                                        title="Dùng vị trí hiện tại"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="fixed-bottom-action" style="padding-bottom: 90px;">
+                    <button class="btn-primary btn-lock"
+                        style="background-color: var(--primary-orange); color: var(--text-primary); font-size: 16px; width: 100%; padding: 15px; border-radius: 12px; border: none; font-weight: bold;"
+                        onclick="app.goToConfirm()">Xem lại thông tin & Đặt lịch</button>
+                </div>
+            </div>
+
+            <!-- 2.3 Confirm Screen -->
+            <div id="screen-confirm" class="screen" style="display: none;">
+                <div class="top-bar"
+                    style="background: var(--primary-orange); color: var(--text-primary); border-bottom: none;">
+                    <i class="fa-solid fa-chevron-left"
+                        style="font-size: 18px; cursor: pointer; color: var(--text-primary);"
+                        onclick="app.navigate('booking')"></i>
+                    <h2 style="color: var(--text-primary); font-size: 16px;">KIỂM TRA LẠI THÔNG TIN</h2>
+                    <div style="width: 24px;"></div>
+                </div>
+
+                <div style="padding: 20px; height: calc(100% - 56px); overflow-y: auto;">
+                    <div
+                        style="background: var(--bg-card); border-radius: 16px; padding: 20px; margin-bottom: 15px; border: 1px solid var(--border-color);">
+                        <p
+                            style="text-align: center; font-weight: bold; color: var(--text-primary); font-size: 15px; margin-bottom: 5px;">
+                            CẢM ƠN QUÝ KHÁCH ĐÃ ĐẶT LỊCH HẸN</p>
+                        <p
+                            style="text-align: center; color: var(--text-secondary); font-size: 13px; margin-bottom: 20px;">
+                            Xin quý khách vui lòng kiểm tra lại thông tin vừa đăng ký</p>
+
+                        <div style="border-top: 1px solid var(--border-color);">
+                            <div
+                                style="display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px solid var(--border-color);">
+                                <span style="color: var(--text-secondary); font-size: 14px;">Dịch vụ</span>
+                                <span id="confirm-service"
+                                    style="color: var(--text-primary); font-weight: bold; font-size: 14px;">Joy-Home</span>
+                            </div>
+                            <div
+                                style="display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px solid var(--border-color);">
+                                <span style="color: var(--text-secondary); font-size: 14px;">Dành cho</span>
+                                <span style="color: var(--text-primary); font-weight: bold; font-size: 14px;">Bác Nguyễn
+                                    Văn A</span>
+                            </div>
+                            <div
+                                style="display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px solid var(--border-color);">
+                                <span style="color: var(--text-secondary); font-size: 14px;">Thời gian</span>
+                                <span id="confirm-time"
+                                    style="color: var(--text-primary); font-weight: bold; font-size: 14px;">08:00,
+                                    15/05/2026</span>
+                            </div>
+                            <div
+                                style="display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px solid var(--border-color);">
+                                <span style="color: var(--text-secondary); font-size: 14px;">Thời lượng</span>
+                                <span id="confirm-duration"
+                                    style="color: var(--text-primary); font-weight: bold; font-size: 14px;">1
+                                    giờ (Tính theo thực tế)</span>
+                            </div>
+                            <div
+                                style="display: flex; justify-content: space-between; align-items: flex-start; padding: 12px 0;">
+                                <span style="color: var(--text-secondary); font-size: 14px;">Địa điểm</span>
+                                <span
+                                    style="color: var(--text-primary); font-weight: bold; font-size: 14px; text-align: right; max-width: 200px;">Số
+                                    10, Ngõ 1, Tôn Thất Tùng, Hà Nội</span>
+                            </div>
+                        </div>
+
+                        <p style="text-align: center; color: var(--text-secondary); font-size: 13px; margin-top: 15px;">
+                            Nếu thông tin trên là đúng, xin mời bấm <strong style="color: var(--text-primary);">xác nhận
+                                đăng
+                                ký</strong></p>
+                        <p style="text-align: center; color: var(--primary-orange); font-size: 13px; margin-top: 5px;">
+                            Hoặc quý khách có thể đăng ký lại</p>
+                    </div>
+
+                    <div style="display: flex; gap: 12px; margin-top: 10px;">
+                        <button onclick="app.navigate('booking')"
+                            style="flex: 1; padding: 15px; background: var(--danger-red); color: var(--text-primary); border: none; border-radius: 12px; font-size: 15px; font-weight: bold; cursor: pointer;">Đăng
+                            ký lại</button>
+                        <button onclick="app.startMatching()"
+                            style="flex: 1; padding: 15px; background: var(--primary-blue); color: var(--text-primary); border: none; border-radius: 12px; font-size: 15px; font-weight: bold; cursor: pointer;">Xác
+                            nhận đăng ký</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 2.5 Finding Screen -->
+            <div id="screen-finding" class="screen flex-center"
+                style="display: none; flex-direction: column; align-items: center; justify-content: center; height: 100%; background-color: var(--bg-dark);">
+                <div class="radar-container"
+                    style="position: relative; width: 120px; height: 120px; margin-bottom: 30px;">
+                    <i class="fa-solid fa-magnifying-glass"
+                        style="font-size: 40px; color: var(--primary-blue); position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);"></i>
+                    <div
+                        style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; border: 2px solid var(--primary-blue); border-radius: 50%; animation: pulse 1.5s infinite;">
+                    </div>
+                </div>
+                <h2 style="color: var(--text-primary); margin-bottom: 10px;">Đang tìm JoyPal...</h2>
+                <p style="color: var(--text-secondary); text-align: center; font-size: 14px; max-width: 80%;">Hệ thống
+                    đang lựa chọn JoyPal phù hợp nhất với yêu cầu và hồ sơ gia đình.</p>
+            </div>
+
+            <!-- 2.6 Matched Screen -->
+            <div id="screen-matched" class="screen" style="display: none;">
+                <div class="top-bar">
+                    <i class="fa-solid fa-chevron-left back-btn" onclick="app.navigate('booking')"></i>
+                    <h2>JoyPal phù hợp</h2>
+                    <div style="width: 24px;"></div>
+                </div>
+                <div class="p-3 mt-4 text-center">
+                    <h3 style="color: var(--success-green); margin-bottom: 20px;">Đã tìm thấy JoyPal! 🎉</h3>
+
+                    <div class="card joypal-card selected"
+                        style="margin-bottom: 30px; text-align: left; padding: 25px 20px;">
+                        <div class="joypal-flex" style="flex-direction: column; align-items: center;">
+                            <img src="https://i.pravatar.cc/150?img=11" class="joypal-avatar-lg"
+                                style="width: 100px; height: 100px; margin-bottom: 15px;" alt="Tuấn">
+                            <h2 style="margin-bottom: 5px;">JoyPal Tuấn, 21</h2>
+                            <div class="text-secondary text-sm mb-3">Đại học Y Hà Nội (Năm 3)</div>
+
+                            <div class="badges-row mb-4" style="justify-content: center;">
+                                <span class="badge badge-vneid" style="font-size: 13px; padding: 6px 12px;"><i
+                                        class="fa-solid fa-shield-halved"></i> VNeID ✓</span>
+                                <span class="badge badge-rating"
+                                    style="font-size: 13px; padding: 6px 12px; background: var(--bg-card);"><i
+                                        class="fa-solid fa-star text-orange"></i> 4.9 (120+)</span>
+                            </div>
+
+                            <div style="width: 100%; border-top: 1px solid var(--border-color); margin-bottom: 15px;">
+                            </div>
+
+                            <div style="width: 100%; text-align: left;">
+                                <span
+                                    style="font-size: 13px; color: var(--text-secondary); margin-bottom: 8px; display: block;">Lý
+                                    do phù hợp với Bác Nguyễn Văn A:</span>
+                                <div class="tags-row" style="flex-wrap: wrap;">
+                                    <span class="tag"
+                                        style="background: rgba(52, 199, 89, 0.2); color: var(--success-green);">Biết sơ
+                                        cứu Y tế cơ bản</span>
+                                    <span class="tag">Chơi cờ tướng xuất sắc</span>
+                                    <span class="tag">Yêu nhạc xưa</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button class="btn-primary"
+                        style="background-color: var(--primary-orange); color: var(--text-primary); width: 100%;"
+                        onclick="app.confirmBooking()">Xác nhận & Thanh toán (VNPAY)</button>
+                    <button class="btn-primary"
+                        style="background-color: transparent; border: 1px solid var(--border-color); color: var(--text-primary); width: 100%; margin-top: 15px;"
+                        onclick="app.navigate('booking')">Hủy / Tìm lại</button>
+                    <p class="safe-text mt-3">JoyCare sẽ khóa 170.000đ và chỉ thanh toán cho Tuấn khi hoàn tất dịch vụ.
+                    </p>
+                </div>
+            </div>
+
+            <!-- PAYMENT Screen -->
+            <div id="screen-payment" class="screen"
+                style="display:none; flex-direction:column; background:#f5f5f5; overflow-y:auto;">
+                <!-- Red Header -->
+                <div style="background:linear-gradient(135deg,#e63946,#c1121f);padding:56px 20px 24px;flex-shrink:0;">
+                    <div style="display:flex;align-items:center;gap:12px;margin-bottom:4px;">
+                        <i class="fa-solid fa-chevron-left"
+                            style="color: var(--text-primary);font-size:16px;cursor:pointer;"
+                            onclick="app.navigate('matched')"></i>
+                        <span style="color: var(--text-secondary);font-size:13px;">Xác nhận đặt lịch</span>
+                    </div>
+                    <h2 style="color: var(--text-primary);font-size:20px;font-weight:800;margin:0;">Thanh toán dịch vụ
+                    </h2>
+                </div>
+
+                <!-- Order Summary Card -->
+                <div
+                    style="margin:-20px 16px 16px;background:white;border-radius:16px;padding:18px;box-shadow:0 4px 20px rgba(0,0,0,0.08);">
+                    <div
+                        style="display:flex;align-items:center;gap:12px;padding-bottom:14px;border-bottom:1px solid #f0f0f0;margin-bottom:14px;">
+                        <div
+                            style="width:48px;height:48px;background:linear-gradient(135deg,#e63946,#c1121f);border-radius:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                            <i class="fa-solid fa-heart-pulse" style="color: var(--text-primary);font-size:20px;"></i>
+                        </div>
+                        <div style="flex:1;">
+                            <div style="font-weight:800;font-size:15px;color:#111;" id="pay-service-name">Joy-Home</div>
+                            <div style="font-size:12px;color:#888;">JoyPal: Phạm Minh Tuấn</div>
+                        </div>
+                        <div style="text-align:right;">
+                            <div style="font-weight:800;font-size:16px;color:#e63946;" id="pay-amount">140.000đ</div>
+                            <div style="font-size:11px;color:#bbb;">tạm giữ</div>
+                        </div>
+                    </div>
+                    <div style="display:flex;flex-direction:column;gap:10px;">
+                        <div style="display:flex;justify-content:space-between;font-size:13px;">
+                            <span style="color:#888;">Thời gian</span>
+                            <span style="color:#111;font-weight:600;" id="pay-time">08:00, 15/05/2026</span>
+                        </div>
+                        <div style="display:flex;justify-content:space-between;font-size:13px;">
+                            <span style="color:#888;">Địa điểm</span>
+                            <span style="color:#111;font-weight:600;text-align:right;max-width:60%;" id="pay-address">10
+                                Tôn Thất Tùng, HN</span>
+                        </div>
+                        <div style="display:flex;justify-content:space-between;font-size:13px;">
+                            <span style="color:#888;">Thời lượng</span>
+                            <span style="color:#111;font-weight:600;" id="pay-duration">1 giờ</span>
+                        </div>
+                        <div
+                            style="border-top:1px dashed #eee;padding-top:10px;display:flex;justify-content:space-between;align-items:center;">
+                            <span style="font-size:14px;font-weight:700;color:#111;">Tổng tiền tạm giữ</span>
+                            <span style="font-size:18px;font-weight:800;color:#e63946;" id="pay-total">140.000đ</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Payment Method -->
+                <div style="margin:0 16px 16px;">
+                    <h3 style="font-size:15px;color:#111;font-weight:700;margin:0 0 12px;">Phương thức thanh toán</h3>
+                    <div
+                        style="background:white;border-radius:14px;overflow:hidden;box-shadow:0 2px 12px rgba(0,0,0,0.06);">
+                        <!-- VNPAY -->
+                        <label
+                            style="display:flex;align-items:center;gap:12px;padding:14px 16px;border-bottom:1px solid #f5f5f5;cursor:pointer;">
+                            <input type="radio" name="pay-method" value="vnpay" checked
+                                style="accent-color:#e63946;width:18px;height:18px;">
+                            <div
+                                style="width:40px;height:28px;background:linear-gradient(135deg,#0066cc,#003d99);border-radius:6px;display:flex;align-items:center;justify-content:center;">
+                                <span style="color: var(--text-primary);font-size:8px;font-weight:900;">VNPAY</span>
+                            </div>
+                            <div style="flex:1;">
+                                <div style="font-weight:600;font-size:14px;color:#111;">VNPAY</div>
+                                <div style="font-size:11px;color:#888;">Quét mã QR / Thẻ ngân hàng</div>
+                            </div>
+                        </label>
+                        <!-- JoyPay Balance -->
+                        <label
+                            style="display:flex;align-items:center;gap:12px;padding:14px 16px;border-bottom:1px solid #f5f5f5;cursor:pointer;">
+                            <input type="radio" name="pay-method" value="joypay"
+                                style="accent-color:#e63946;width:18px;height:18px;">
+                            <div
+                                style="width:40px;height:28px;background:linear-gradient(135deg,#FF6B35,#e63946);border-radius:6px;display:flex;align-items:center;justify-content:center;">
+                                <span style="color: var(--text-primary);font-size:8px;font-weight:900;">JoyPay</span>
+                            </div>
+                            <div style="flex:1;">
+                                <div style="font-weight:600;font-size:14px;color:#111;">Số dư JoyPay</div>
+                                <div style="font-size:11px;color:#888;">Số dư: 1.250.000đ</div>
+                            </div>
+                            <span style="font-size:11px;color:#34C759;font-weight:700;">Khuyến nghị</span>
+                        </label>
+                        <!-- Cash -->
+                        <label style="display:flex;align-items:center;gap:12px;padding:14px 16px;cursor:pointer;">
+                            <input type="radio" name="pay-method" value="cash"
+                                style="accent-color:#e63946;width:18px;height:18px;">
+                            <div
+                                style="width:40px;height:28px;background:linear-gradient(135deg,#34C759,#248A3D);border-radius:6px;display:flex;align-items:center;justify-content:center;">
+                                <i class="fa-solid fa-money-bill"
+                                    style="color: var(--text-primary);font-size:12px;"></i>
+                            </div>
+                            <div style="flex:1;">
+                                <div style="font-weight:600;font-size:14px;color:#111;">Tiền mặt</div>
+                                <div style="font-size:11px;color:#888;">Thanh toán khi hoàn thành</div>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Trust Notice -->
+                <div
+                    style="margin:0 16px 16px;background:rgba(52,199,89,0.08);border:1px solid rgba(52,199,89,0.25);border-radius:12px;padding:12px 14px;display:flex;gap:10px;align-items:flex-start;">
+                    <i class="fa-solid fa-shield-halved"
+                        style="color:#34C759;font-size:16px;flex-shrink:0;margin-top:2px;"></i>
+                    <div style="font-size:12px;color:#555;line-height:1.5;">
+                        <b style="color:#111;">Tạm giữ an toàn:</b> JoyCare chỉ trừ tiền thật sau khi dịch vụ hoàn
+                        thành. Bạn sẽ nhận lại nếu hủy trước 30 phút.
+                    </div>
+                </div>
+
+                <!-- Confirm Button -->
+                <div style="padding:8px 16px 30px;">
+                    <button onclick="app.processPayment()"
+                        style="width:100%;background:linear-gradient(135deg,#e63946,#c1121f);color: var(--text-primary);padding:17px;border:none;border-radius:14px;font-size:16px;font-weight:800;cursor:pointer;box-shadow:0 6px 20px rgba(230,57,70,0.4);letter-spacing:0.3px;">
+                        Xác nhận thanh toán <i class="fa-solid fa-arrow-right" style="margin-left:6px;"></i>
+                    </button>
+                    <p style="text-align:center;font-size:12px;color:#aaa;margin-top:12px;">Bằng cách thanh toán, bạn
+                        đồng ý với Điều khoản dịch vụ JoyCare</p>
+                </div>
+            </div>
+
+            <!-- PAYMENT SUCCESS Screen -->
+            <div id="screen-payment-success" class="screen"
+                style="display:none; flex-direction:column; background:#fff; overflow-y:auto;">
+                <!-- Red accent top -->
+                <div style="background:linear-gradient(135deg,#e63946,#c1121f);height:8px;flex-shrink:0;"></div>
+                <!-- Close row -->
+                <div style="display:flex;align-items:center;padding:18px 20px 12px;flex-shrink:0;">
+                    <i class="fa-solid fa-xmark" style="font-size:20px;color:#e63946;cursor:pointer;margin-right:10px;"
+                        onclick="app.navigate('home')"></i>
+                    <span style="font-weight:700;font-size:16px;color:#e63946;">Đặt lịch thành công</span>
+                </div>
+
+                <!-- Main content -->
+                <div style="padding:10px 24px 24px;">
+                    <!-- Title + badge row -->
+                    <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:20px;">
+                        <div style="flex:1;padding-right:16px;">
+                            <h2 style="font-size:22px;font-weight:900;color:#111;line-height:1.3;margin:0 0 10px;">Cảm
+                                ơn bạn đã tin tưởng & lựa chọn dịch vụ JoyCare! 🎉</h2>
+                            <p style="font-size:13px;color:#666;line-height:1.5;">Lịch hẹn đã được xác nhận. JoyPal sẽ
+                                đến đúng giờ và chăm sóc người thân của bạn chu đáo!</p>
+                        </div>
+                        <div style="width:68px;height:68px;flex-shrink:0;">
+                            <div
+                                style="width:68px;height:68px;background:linear-gradient(135deg,#34C759,#248A3D);border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 16px rgba(52,199,89,0.4);">
+                                <i class="fa-solid fa-check"
+                                    style="color: var(--text-primary);font-size:28px;font-weight:900;"></i>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Booking ID Card -->
+                    <div
+                        style="background:#f8f8f8;border-radius:14px;padding:16px 18px;margin-bottom:24px;display:flex;align-items:center;gap:14px;">
+                        <div
+                            style="width:44px;height:44px;background:#E3EEF9;border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                            <i class="fa-solid fa-receipt" style="color:#007AFF;font-size:18px;"></i>
+                        </div>
+                        <div>
+                            <div style="font-size:12px;color:#888;margin-bottom:3px;">Mã đặt lịch</div>
+                            <div style="font-size:18px;font-weight:900;color:#111;letter-spacing:1px;"
+                                id="booking-id-display">JC-2026-8810</div>
+                        </div>
+                    </div>
+
+                    <!-- Next Steps -->
+                    <h3 style="font-size:15px;font-weight:800;color:#111;margin:0 0 16px;">Các bước tiếp theo</h3>
+                    <div style="display:flex;flex-direction:column;gap:0;">
+                        <!-- Step 1 -->
+                        <div
+                            style="display:flex;gap:14px;align-items:flex-start;position:relative;padding-bottom:20px;">
+                            <div style="display:flex;flex-direction:column;align-items:center;gap:0;flex-shrink:0;">
+                                <div
+                                    style="width:38px;height:38px;background:rgba(52,199,89,0.12);border:2px solid rgba(52,199,89,0.4);border-radius:10px;display:flex;align-items:center;justify-content:center;">
+                                    <i class="fa-solid fa-map-location-dot" style="color:#34C759;font-size:14px;"></i>
+                                </div>
+                                <div
+                                    style="width:2px;flex:1;background:linear-gradient(to bottom,rgba(52,199,89,0.4),rgba(52,199,89,0.1));min-height:20px;">
+                                </div>
+                            </div>
+                            <div style="padding-top:8px;">
+                                <div style="font-weight:700;font-size:14px;color:#111;margin-bottom:3px;">1. Theo dõi
+                                    JoyPal di chuyển</div>
+                                <div style="font-size:12px;color:#888;line-height:1.5;">Bấm "Theo dõi" để xem vị trí
+                                    JoyPal đang di chuyển đến nhà bạn theo thời gian thực.</div>
+                            </div>
+                        </div>
+                        <!-- Step 2 -->
+                        <div
+                            style="display:flex;gap:14px;align-items:flex-start;position:relative;padding-bottom:20px;">
+                            <div style="display:flex;flex-direction:column;align-items:center;gap:0;flex-shrink:0;">
+                                <div
+                                    style="width:38px;height:38px;background:rgba(0,122,255,0.1);border:2px solid rgba(0,122,255,0.3);border-radius:10px;display:flex;align-items:center;justify-content:center;">
+                                    <i class="fa-solid fa-heart-pulse" style="color:#007AFF;font-size:14px;"></i>
+                                </div>
+                                <div
+                                    style="width:2px;flex:1;background:linear-gradient(to bottom,rgba(0,122,255,0.3),rgba(0,122,255,0.1));min-height:20px;">
+                                </div>
+                            </div>
+                            <div style="padding-top:8px;">
+                                <div style="font-weight:700;font-size:14px;color:#111;margin-bottom:3px;">2. JoyPal đến
+                                    & bắt đầu chăm sóc</div>
+                                <div style="font-size:12px;color:#888;line-height:1.5;">Bạn sẽ nhận thông báo khi JoyPal
+                                    check-in. Cập nhật hình ảnh & nhật ký được gửi thời gian thực.</div>
+                            </div>
+                        </div>
+                        <!-- Step 3 -->
+                        <div style="display:flex;gap:14px;align-items:flex-start;">
+                            <div style="flex-shrink:0;">
+                                <div
+                                    style="width:38px;height:38px;background:rgba(255,149,0,0.1);border:2px solid rgba(255,149,0,0.3);border-radius:10px;display:flex;align-items:center;justify-content:center;">
+                                    <i class="fa-solid fa-star" style="color:#FF9500;font-size:14px;"></i>
+                                </div>
+                            </div>
+                            <div style="padding-top:8px;">
+                                <div style="font-weight:700;font-size:14px;color:#111;margin-bottom:3px;">3. Đánh giá &
+                                    hoàn tất</div>
+                                <div style="font-size:12px;color:#888;line-height:1.5;">Sau khi hoàn thành, hãy đánh giá
+                                    JoyPal. Tiền sẽ chỉ được trừ lúc này.</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Action Buttons -->
+                <div style="padding:8px 16px 30px;display:flex;flex-direction:column;gap:10px;">
+                    <button onclick="app.goToTracking()"
+                        style="width:100%;background:linear-gradient(135deg,#e63946,#c1121f);color: var(--text-primary);padding:17px;border:none;border-radius:14px;font-size:15px;font-weight:800;cursor:pointer;box-shadow:0 6px 20px rgba(230,57,70,0.4);">
+                        <i class="fa-solid fa-map-location-dot" style="margin-right:8px;"></i>Theo dõi JoyPal ngay
+                    </button>
+                    <button onclick="app.navigate('home')"
+                        style="width:100%;background:#f5f5f5;color:#555;padding:14px;border:none;border-radius:14px;font-size:14px;font-weight:600;cursor:pointer;">
+                        Về trang chủ
+                    </button>
+                </div>
+            </div>
+
+            <!-- 3.5 Call Translation Screen -->
+            <div id="screen-call" class="screen">
+                <div class="call-header">
+                    <div class="call-time">00:10</div>
+                    <div class="call-number">+49 160 95620427</div>
+                </div>
+
+                <div class="call-translation-container">
+                    <div class="translation-bubble-group" style="padding-top: 20px;">
+                        <div class="translation-context">Für diesen Anruf ist die Übersetzung aktiviert</div>
+                        <div class="translation-bubble primary">
+                            Translation is on for this call
+                        </div>
+                    </div>
+
+                    <div class="translation-bubble-group" style="margin-top: 10px;">
+                        <div class="translation-context">Hallo, sind Sie für <span class="translation-highlight"
+                                style="color:#64d2ff;">eine Hochzeit am 6. Dezember</span> verfügbar?</div>
+                        <div class="translation-bubble secondary">
+                            Hi, are you available to cater a wedding on December 6?
+                        </div>
+                    </div>
+
+                    <div style="text-align: center;">
+                        <button class="translating-status-btn">
+                            <i class="fa-solid fa-language" style="margin-right:4px;"></i> Translating German <i
+                                class="fa-solid fa-chevron-down" style="font-size: 10px; margin-left: 4px;"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="call-controls-grid">
+                    <div class="call-btn-wrapper">
+                        <button class="call-btn btn-active">
+                            <i class="fa-solid fa-volume-high"></i>
+                        </button>
+                        <span class="call-btn-label">Speaker</span>
+                    </div>
+                    <div class="call-btn-wrapper">
+                        <button class="call-btn btn-glass">
+                            <i class="fa-solid fa-video" style="opacity: 0.5;"></i>
+                        </button>
+                        <span class="call-btn-label" style="opacity: 0.5;">FaceTime</span>
+                    </div>
+                    <div class="call-btn-wrapper">
+                        <button class="call-btn btn-glass">
+                            <i class="fa-solid fa-microphone-slash"></i>
+                        </button>
+                        <span class="call-btn-label">Mute</span>
+                    </div>
+
+                    <div class="call-btn-wrapper">
+                        <button class="call-btn btn-glass">
+                            <i class="fa-solid fa-ellipsis"></i>
+                        </button>
+                        <span class="call-btn-label">More</span>
+                    </div>
+                    <div class="call-btn-wrapper">
+                        <button class="call-btn btn-end" onclick="app.navigate('tracking')">
+                            <i class="fa-solid fa-phone-slash"></i>
+                        </button>
+                        <span class="call-btn-label">End</span>
+                    </div>
+                    <div class="call-btn-wrapper">
+                        <button class="call-btn btn-glass">
+                            <i class="fa-solid fa-grip" style="font-size: 22px;"></i>
+                        </button>
+                        <span class="call-btn-label">Keypad</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 4. Live Tracking Screen (redesigned to match reference image) -->
+            <div id="screen-tracking" class="screen"
+                style="display: flex; flex-direction: column; background: #1a1a2e; overflow: hidden; padding: 0 !important;">
+
+                <!-- No-booking gate overlay -->
+                <div id="tracking-no-booking-gate"
+                    style="display:none;position:absolute;inset:0;z-index:100;background:var(--bg-dark);flex-direction:column;align-items:center;justify-content:center;gap:20px;">
+                    <div
+                        style="width:80px;height:80px;border-radius:50%;background:rgba(255,149,0,0.12);border:2px solid rgba(255,149,0,0.3);display:flex;align-items:center;justify-content:center;">
+                        <i class="fa-solid fa-calendar-xmark" style="font-size:34px;color:#FF9500;"></i>
+                    </div>
+                    <div style="text-align:center;padding:0 32px;">
+                        <div style="color: var(--text-primary);font-size:17px;font-weight:800;margin-bottom:8px;">Chưa
+                            có lịch hẹn</div>
+                        <div style="color: var(--text-secondary);font-size:13px;line-height:1.6;">Bạn phải đặt lịch mới
+                            có thể theo dõi</div>
+                    </div>
+                    <button onclick="app.navigate('booking')"
+                        style="background:linear-gradient(135deg,#FF9500,#e67e00);color: var(--text-primary);border:none;border-radius:14px;padding:14px 32px;font-size:15px;font-weight:700;cursor:pointer;box-shadow:0 4px 16px rgba(255,149,0,0.35);">
+                        <i class="fa-solid fa-calendar-plus" style="margin-right:8px;"></i>Đặt lịch ngay
+                    </button>
+                </div>
+
+                <!-- Top Bar -->
+                <div id="tracking-top-bar"
+                    style="background:var(--bg-dark);padding:52px 16px 12px;display:flex;align-items:center;gap:12px;flex-shrink:0;position:relative;z-index:2;transition: all 0.3s ease;border-bottom:1px solid var(--border-color);">
+                    <button onclick="app.navigate('home')"
+                        style="width:34px;height:34px;border-radius:50%;background:rgba(255,255,255,0.1);border:none;color: var(--text-primary);font-size:14px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                        <i class="fa-solid fa-chevron-left"></i>
+                    </button>
+                    <div style="flex:1;">
+                        <div style="color: var(--text-primary);font-weight:800;font-size:16px;">Nhật ký trực tiếp</div>
+                        <div id="tracking-joypal-status"
+                            style="font-size:11px;color:#34C759;display:flex;align-items:center;gap:4px;">
+                            <span
+                                style="width:6px;height:6px;background:#34C759;border-radius:50%;display:inline-block;"></span>
+                            JoyPal Tuấn đang ở cùng bố
+                        </div>
+                    </div>
+                    <button
+                        style="background:rgba(255,255,255,0.1);border:none;color: var(--text-primary);border-radius:20px;padding:6px 12px;font-size:11px;font-weight:600;cursor:pointer;"
+                        onclick="window.open('https://maps.google.com')">
+                        Mở trong Maps <i class="fa-solid fa-arrow-up-right-from-square"
+                            style="font-size:9px;margin-left:3px;"></i>
+                    </button>
+                </div>
+
+                <!-- Map -->
+                <div id="tracking-map-container"
+                    style="flex:0 0 42%;position:relative;overflow:hidden;transition: flex 0.3s ease;">
+                    <iframe id="tracking-map-iframe"
+                        src="https://www.openstreetmap.org/export/embed.html?bbox=105.78,20.98,105.88,21.05&amp;layer=mapnik&amp;marker=21.02,105.83"
+                        style="width:100%;height:100%;border:none;display:block;" loading="lazy"
+                        title="JoyPal location map">
+                    </iframe>
+                    <!-- JoyPal animated pin -->
+                    <div id="joypal-marker"
+                        style="position:absolute;top:48%;left:25%;transition:all 1.2s ease-in-out;z-index:998;">
+                        <div
+                            style="background:var(--bg-dark);border:3px solid #007AFF;border-radius:50%;width:46px;height:46px;display:flex;align-items:center;justify-content:center;box-shadow:0 3px 12px rgba(0,122,255,0.6);">
+                            <img src="https://i.pravatar.cc/150?img=11"
+                                style="width:38px;height:38px;border-radius:50%;object-fit:cover;">
+                        </div>
+                        <div
+                            style="width:8px;height:8px;background:#007AFF;border-radius:50%;margin:0 auto;margin-top:-3px;box-shadow:0 2px 6px rgba(0,122,255,0.5);">
+                        </div>
+                        <div
+                            style="background:rgba(26,26,46,0.85);color: var(--text-primary);font-size:10px;font-weight:700;padding:3px 8px;border-radius:8px;margin-top:4px;white-space:nowrap;text-align:center;">
+                            Công viên Cầu Giấy
+                        </div>
+                    </div>
+                    <!-- Map action buttons overlaid -->
+                    <div
+                        style="position:absolute;right:10px;top:10px;display:flex;flex-direction:column;gap:8px;z-index:999;">
+                        <button onclick="app.navigate('call')"
+                            style="width:36px;height:36px;border-radius:50%;background:white;border:none;box-shadow:0 2px 8px rgba(0,0,0,0.18);font-size:14px;cursor:pointer;display:flex;align-items:center;justify-content:center;color:#333;">
+                            <i class="fa-solid fa-phone" style="color:#34C759;"></i>
+                        </button>
+                        <button id="expand-map-btn" onclick="app.toggleFullMap()"
+                            style="width:36px;height:36px;border-radius:50%;background:white;border:none;box-shadow:0 2px 8px rgba(0,0,0,0.18);font-size:14px;cursor:pointer;display:flex;align-items:center;justify-content:center;color:#333;">
+                            <i class="fa-solid fa-expand" style="color:#555;"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Timeline / Nhật ký section -->
+                <div id="tracking-timeline-container"
+                    style="flex:1;background:var(--bg-dark);display:flex;flex-direction:column;overflow:hidden;transition: all 0.3s ease;">
+                    <!-- Section Header -->
+                    <div
+                        style="display:flex;align-items:center;justify-content:space-between;padding:14px 16px 10px;flex-shrink:0;">
+                        <h3
+                            style="color: var(--text-primary);font-size:16px;font-weight:800;margin:0;font-family:var(--heading-font);">
+                            Lịch trình &lt;&amp;gt; Nhật ký
+                        </h3>
+                        <button
+                            style="background:#2B5EE2;color: var(--text-primary);border:none;border-radius:20px;padding:5px 12px;font-size:11px;font-weight:700;cursor:pointer;">Hôm
+                            nay</button>
+                    </div>
+                    <!-- Timeline scroll -->
+                    <div id="chat-history" style="flex:1;overflow-y:auto;padding:0 16px 12px;"></div>
+                    <!-- Chat input - inspired by reference -->
+                    <div class="chat-input-area"
+                        style="display:flex;align-items:center;gap:10px;padding:10px 16px 14px;background:var(--bg-dark);border-top:1px solid var(--border-color);flex-shrink:0;">
+                        <button onclick="app.finishTracking()"
+                            style="width:40px;height:40px;border-radius:50%;background:#e63946;border:none;color: var(--text-primary);font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                            <i class="fa-solid fa-exclamation"></i>
+                        </button>
+                        <input type="text" id="tracking-chat" placeholder="Nhắn cho JoyPal Tuấn..."
+                            style="flex:1;background:var(--bg-card);border:1px solid var(--border-color);padding:11px 16px;border-radius:22px;font-size:13px;outline:none;font-family:'Inter',sans-serif;color: var(--text-primary);" />
+                        <button onclick="app.sendChatMessage()"
+                            style="width:38px;height:38px;border-radius:50%;background:#007AFF;border:none;color: var(--text-primary);font-size:14px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                            <i class="fa-solid fa-paper-plane"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Rating Bottom Sheet -->
+                <div id="rating-modal"
+                    style="display: none; position: absolute; inset: 0; background: rgba(0,0,0,0.75); z-index: 10005; align-items: flex-end;">
+                    <div
+                        style="background: var(--bg-card); width: 100%; border-radius: 24px 24px 0 0; padding: 0 0 30px 0; max-height: 90%; overflow-y: auto;">
+                        <div style="width: 40px; height: 4px; background: #555; border-radius: 2px; margin: 12px auto;">
+                        </div>
+                        <div
+                            style="padding: 5px 20px 15px 20px; text-align: center; border-bottom: 1px solid var(--border-color);">
+                            <h3 style="color: var(--text-primary); font-size: 17px; margin: 0;">Đánh giá dịch vụ</h3>
+                            <p style="color: var(--text-secondary); font-size: 13px; margin-top: 5px;">Dịch vụ Joy-Home
+                                đã hoàn thành</p>
+                        </div>
+                        <div
+                            style="padding: 15px 20px; display: flex; align-items: center; gap: 15px; border-bottom: 1px solid var(--border-color);">
+                            <img src="https://i.pravatar.cc/150?img=11"
+                                style="width: 52px; height: 52px; border-radius: 50%; border: 2px solid var(--primary-blue);">
+                            <div style="flex: 1;">
+                                <div style="color: var(--text-secondary); font-size: 12px;">JoyPal JoyCare</div>
+                                <div style="color: var(--text-primary); font-weight: bold; font-size: 16px;">Phạm Minh
+                                    Tuấn</div>
+                                <div style="color: var(--text-secondary); font-size: 12px;">Đại học Y Hà Nội</div>
+                            </div>
+                            <div style="text-align: right;">
+                                <div style="color: #ffd700; font-weight: bold; font-size: 20px;">5.0 ⭐</div>
+                            </div>
+                        </div>
+                        <div style="padding: 20px; text-align: center;">
+                            <h4 style="color: var(--text-primary); font-size: 15px; margin-bottom: 5px;">Hãy chọn sao
+                                đánh giá</h4>
+                            <p style="color: var(--text-secondary); font-size: 13px; margin-bottom: 15px;">1 sao = không
+                                hài lòng, 5 sao = cực kỳ hài lòng</p>
+                            <div id="rating-stars"
+                                style="display: flex; justify-content: center; gap: 12px; margin-bottom: 20px;">
+                                <i class="fa-solid fa-star" style="font-size: 38px; color: #ffd700; cursor: pointer;"
+                                    onclick="app.setRating(1)"></i>
+                                <i class="fa-solid fa-star" style="font-size: 38px; color: #ffd700; cursor: pointer;"
+                                    onclick="app.setRating(2)"></i>
+                                <i class="fa-solid fa-star" style="font-size: 38px; color: #ffd700; cursor: pointer;"
+                                    onclick="app.setRating(3)"></i>
+                                <i class="fa-solid fa-star" style="font-size: 38px; color: #ffd700; cursor: pointer;"
+                                    onclick="app.setRating(4)"></i>
+                                <i class="fa-solid fa-star" style="font-size: 38px; color: #ffd700; cursor: pointer;"
+                                    onclick="app.setRating(5)"></i>
+                            </div>
+                            <p
+                                style="text-align: left; color: var(--text-primary); font-weight: bold; font-size: 14px; margin-bottom: 12px;">
+                                Bạn thấy JoyPal này như thế nào?</p>
+                            <div
+                                style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-bottom: 20px;">
+                                <div onclick="app.toggleTag(this)"
+                                    style="border: 1px solid var(--border-color); padding: 12px 5px; border-radius: 12px; font-size: 12px; color: var(--text-secondary); font-weight: 500; display: flex; flex-direction: column; align-items: center; cursor: pointer; background: var(--bg-dark); transition: all 0.2s;">
+                                    <div style="font-size: 22px; margin-bottom: 6px;">🌟</div> Chuyên nghiệp
+                                </div>
+                                <div onclick="app.toggleTag(this)"
+                                    style="border: 1px solid var(--border-color); padding: 12px 5px; border-radius: 12px; font-size: 12px; color: var(--text-secondary); font-weight: 500; display: flex; flex-direction: column; align-items: center; cursor: pointer; background: var(--bg-dark); transition: all 0.2s;">
+                                    <div style="font-size: 22px; margin-bottom: 6px;">❤️</div> Nhiệt tình
+                                </div>
+                                <div onclick="app.toggleTag(this)"
+                                    style="border: 1px solid var(--border-color); padding: 12px 5px; border-radius: 12px; font-size: 12px; color: var(--text-secondary); font-weight: 500; display: flex; flex-direction: column; align-items: center; cursor: pointer; background: var(--bg-dark); transition: all 0.2s;">
+                                    <div style="font-size: 22px; margin-bottom: 6px;">🤝</div> Thân thiện
+                                </div>
+                                <div onclick="app.toggleTag(this)"
+                                    style="border: 1px solid var(--border-color); padding: 12px 5px; border-radius: 12px; font-size: 12px; color: var(--text-secondary); font-weight: 500; display: flex; flex-direction: column; align-items: center; cursor: pointer; background: var(--bg-dark); transition: all 0.2s;">
+                                    <div style="font-size: 22px; margin-bottom: 6px;">⚡</div> Nhanh chóng
+                                </div>
+                                <div onclick="app.toggleTag(this)"
+                                    style="border: 1px solid var(--border-color); padding: 12px 5px; border-radius: 12px; font-size: 12px; color: var(--text-secondary); font-weight: 500; display: flex; flex-direction: column; align-items: center; cursor: pointer; background: var(--bg-dark); transition: all 0.2s;">
+                                    <div style="font-size: 22px; margin-bottom: 6px;">🙌</div> Lịch sự
+                                </div>
+                                <div onclick="app.toggleTag(this)"
+                                    style="border: 1px solid var(--border-color); padding: 12px 5px; border-radius: 12px; font-size: 12px; color: var(--text-secondary); font-weight: 500; display: flex; flex-direction: column; align-items: center; cursor: pointer; background: var(--bg-dark); transition: all 0.2s;">
+                                    <div style="font-size: 22px; margin-bottom: 6px;">🛡️</div> Cẩn thận
+                                </div>
+                            </div>
+                            <input type="text" placeholder="Ghi chú thêm (không bắt buộc)"
+                                style="width: 100%; border: 1px solid var(--border-color); background: var(--bg-dark); color: var(--text-primary); border-radius: 10px; padding: 13px; font-size: 14px; margin-bottom: 15px; outline: none; box-sizing: border-box; font-family: 'Inter', sans-serif;">
+                            <button onclick="app.submitRating()"
+                                style="width: 100%; background: var(--primary-blue); color: var(--text-primary); padding: 15px; border: none; border-radius: 12px; font-size: 16px; font-weight: bold; cursor: pointer; box-shadow: 0 4px 12px rgba(0,122,255,0.4);">Gửi
+                                đánh giá &amp; Hoàn tất</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- THANK YOU Screen (after rating) -->
+            <div id="screen-thankyou" class="screen"
+                style="display:none; flex-direction:column; background:#fff; align-items:center; justify-content:center; text-align:center; padding:40px 24px;">
+                <!-- Big checkmark -->
+                <div
+                    style="width:100px;height:100px;background:linear-gradient(135deg,#34C759,#28a745);border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 8px 30px rgba(52,199,89,0.4);margin-bottom:28px;animation:tada 0.6s ease;">
+                    <i class="fa-solid fa-check" style="color: var(--text-primary);font-size:48px;"></i>
+                </div>
+                <h2 style="font-size:24px;font-weight:900;color:#111;margin:0 0 14px;line-height:1.3;">Cảm ơn quý khách!
+                    🙏</h2>
+                <p style="font-size:15px;color:#555;line-height:1.6;margin:0 0 8px;">Rất hân hạnh khi được gặp quý
+                    khách.</p>
+                <p style="font-size:14px;color:#888;line-height:1.6;margin:0 0 32px;">Đánh giá của bạn giúp chúng tôi
+                    không ngừng nâng cao chất lượng dịch vụ JoyCare.</p>
+
+                <!-- Stats row -->
+                <div
+                    style="display:flex;gap:0;width:100%;background:#f8f8f8;border-radius:16px;overflow:hidden;margin-bottom:28px;">
+                    <div style="flex:1;padding:16px 10px;text-align:center;border-right:1px solid #eee;">
+                        <div style="font-size:22px;font-weight:900;color:#e63946;">5.0</div>
+                        <div style="font-size:11px;color:#888;margin-top:4px;">Đánh giá của bạn</div>
+                    </div>
+                    <div style="flex:1;padding:16px 10px;text-align:center;border-right:1px solid #eee;">
+                        <div style="font-size:22px;font-weight:900;color:#007AFF;">94</div>
+                        <div style="font-size:11px;color:#888;margin-top:4px;">EQ Score Tuấn</div>
+                    </div>
+                    <div style="flex:1;padding:16px 10px;text-align:center;">
+                        <div style="font-size:22px;font-weight:900;color:#34C759;">✓</div>
+                        <div style="font-size:11px;color:#888;margin-top:4px;">Đã hoàn thành</div>
+                    </div>
+                </div>
+
+                <button onclick="app.navigate('home')"
+                    style="width:100%;background:linear-gradient(135deg,#e63946,#c1121f);color: var(--text-primary);padding:17px;border:none;border-radius:14px;font-size:16px;font-weight:800;cursor:pointer;box-shadow:0 6px 20px rgba(230,57,70,0.4);">
+                    Về trang chủ
+                </button>
+                <button onclick="app.navigate('booking')"
+                    style="width:100%;background:transparent;color:#888;padding:14px;border:none;border-radius:14px;font-size:14px;cursor:pointer;margin-top:8px;">
+                    Đặt lịch lần tới
+                </button>
+            </div>
+
+            <!-- 5. Profile Screen -->
+            <div id="screen-profile" class="screen">
+
+                <div class="profile-header">
+                    <img src="https://i.pravatar.cc/150?img=5" alt="Khách hàng" class="profile-avatar">
+                    <div class="profile-info">
+                        <h2>Lan Phương</h2>
+                        <span class="badge">Thành viên Vàng</span>
+                    </div>
+                </div>
+
+                <div class="profile-section">
+                    <div class="wallet-card">
+                        <div>
+                            <div class="text-sm opacity-70">Số dư JoyPay</div>
+                            <div class="wallet-balance" id="profile-balance">1.250.000đ</div>
+                        </div>
+                        <button class="btn-primary" style="width: auto; padding: 10px 15px; font-size: 13px;">Nạp
+                            tiền</button>
+                    </div>
+
+                    <h3 style="margin: 20px 0 10px 0; font-size: 16px;">Lịch sử chăm sóc gần đây</h3>
+                    <div id="profile-history-list">
+                        <!-- Populated dynamically -->
+                    </div>
+
+                    <div class="menu-list mt-3">
+                        <div class="menu-item" onclick="app.navigate('family-profile')">
+                            <div class="menu-icon"
+                                style="background-color: rgba(43,94,226,0.1); color: var(--primary-blue);"><i
+                                    class="fa-solid fa-users"></i></div>
+                            <div class="menu-text">Hồ sơ người thân</div>
+                            <i class="fa-solid fa-chevron-right menu-arrow"></i>
+                        </div>
+                        <div class="menu-item" onclick="app.navigate('support')">
+                            <div class="menu-icon"
+                                style="background-color: rgba(255,59,48,0.1); color: var(--danger-red);"><i
+                                    class="fa-solid fa-headset"></i></div>
+                            <div class="menu-text">Trung tâm hỗ trợ 24/7</div>
+                            <i class="fa-solid fa-chevron-right menu-arrow"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Screen: Register / Auth Flow -->
+            <div id="screen-register" class="screen" style="display:none; overflow-y:auto; background: #fff;">
+                <div style="padding:40px 20px 20px; text-align:center; background: #fff;">
+                    <h2 style="color:#111; font-size:22px; font-weight:800; line-height:1.2;">Bắt đầu kết nối với hàng
+                        triệu chuyên gia và khách hàng!</h2>
+                </div>
+
+                <div style="display:flex; border-bottom:1px solid #eee; background:#fff;">
+                    <button onclick="app.switchAuthTab('login')" id="tab-login"
+                        style="flex:1; padding:16px; background:transparent; border:none; color:#888; font-size:13px; font-weight:700; cursor:pointer; border-bottom:2px solid transparent; font-family:'Inter',sans-serif; letter-spacing:0.5px;">ĐĂNG
+                        NHẬP</button>
+                    <button onclick="app.switchAuthTab('register')" id="tab-register"
+                        style="flex:1; padding:16px; background:transparent; border:none; color:#e63946; font-size:13px; font-weight:700; cursor:pointer; border-bottom:2px solid #e63946; font-family:'Inter',sans-serif; letter-spacing:0.5px;">ĐĂNG
+                        KÍ</button>
+                </div>
+
+                <div style="padding:25px 20px; background:#fff; min-height:100%;">
+                    <!-- Login Panel (inside Register screen for tab switching) -->
+                    <div id="panel-login" style="display:none;">
+                        <input type="text" placeholder="Tên đăng nhập"
+                            style="width:100%;background:#fff;border:1px solid #ddd;color:#111;padding:14px;border-radius:4px;font-size:14px;outline:none;box-sizing:border-box;font-family:'Inter',sans-serif;margin-bottom:15px;">
+                        <input type="password" placeholder="Mật khẩu"
+                            style="width:100%;background:#fff;border:1px solid #ddd;color:#111;padding:14px;border-radius:4px;font-size:14px;outline:none;box-sizing:border-box;font-family:'Inter',sans-serif;margin-bottom:25px;">
+                        <button onclick="app.navigate('home')"
+                            style="width:100%;background:#e63946;color: var(--text-primary);padding:15px;border:none;border-radius:4px;font-size:15px;font-weight:700;cursor:pointer;margin-bottom:25px;">Đăng
+                            nhập</button>
+                    </div>
+
+                    <!-- Register Panel -->
+                    <div id="panel-register">
+                        <input type="text" placeholder="Họ tên"
+                            style="width:100%;background:#fff;border:1px solid #ddd;color:#111;padding:14px;border-radius:4px;font-size:14px;outline:none;box-sizing:border-box;font-family:'Inter',sans-serif;margin-bottom:15px;">
+                        <input type="email" placeholder="Nhập email"
+                            style="width:100%;background:#fff;border:1px solid #ddd;color:#111;padding:14px;border-radius:4px;font-size:14px;outline:none;box-sizing:border-box;font-family:'Inter',sans-serif;margin-bottom:15px;">
+                        <input type="password" placeholder="Nhập mật khẩu"
+                            style="width:100%;background:#fff;border:1px solid #ddd;color:#111;padding:14px;border-radius:4px;font-size:14px;outline:none;box-sizing:border-box;font-family:'Inter',sans-serif;margin-bottom:15px;">
+                        <input type="password" placeholder="Nhập lại mật khẩu"
+                            style="width:100%;background:#fff;border:1px solid #ddd;color:#111;padding:14px;border-radius:4px;font-size:14px;outline:none;box-sizing:border-box;font-family:'Inter',sans-serif;margin-bottom:20px;">
+
+                        <p style="font-size:12px;color:#666;margin-bottom:25px;text-align:left;">Bằng việc đăng ký, bạn
+                            đã đồng ý với JoyCare về <span style="color:#007AFF;cursor:pointer;">Điều khoản & chính
+                                sách</span></p>
+
+                        <button onclick="app.navigate('home')"
+                            style="width:100%;background:#e63946;color: var(--text-primary);padding:15px;border:none;border-radius:4px;font-size:15px;font-weight:700;cursor:pointer;margin-bottom:25px;">Đăng
+                            kí</button>
+                    </div>
+
+                    <!-- Social Divider -->
+                    <div style="display:flex; align-items:center; margin-bottom:25px;">
+                        <div style="flex:1; height:1px; background:#ddd;"></div>
+                        <div style="padding:0 15px; color:#888; font-size:12px; font-style:italic;">or</div>
+                        <div style="flex:1; height:1px; background:#ddd;"></div>
+                    </div>
+
+                    <!-- Social Buttons -->
+                    <div style="display:flex;gap:12px;">
+                        <button onclick="app.navigate('home')"
+                            style="flex:1;background:#3b5998;color: var(--text-primary);padding:13px;border:none;border-radius:4px;font-size:13px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px;">
+                            <i class="fa-brands fa-facebook-f"></i> Facebook
+                        </button>
+                        <button onclick="app.navigate('home')"
+                            style="flex:1;background:#4285f4;color: var(--text-primary);padding:13px;border:none;border-radius:4px;font-size:13px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px;">
+                            <i class="fa-brands fa-google"></i> Google
+                        </button>
+                    </div>
+
+                    <div style="text-align:center;margin-top:30px;">
+                        <span style="color:#666;font-size:13px;">Đã có tài khoản? </span>
+                        <span onclick="app.switchAuthTab('login')"
+                            style="color:#007AFF;font-size:13px;cursor:pointer;font-weight:700;">Đăng nhập ngay</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Screen: Support Chat -->
+            <div id="screen-support" class="screen" style="display:none; flex-direction:column; height:100%;">
+                <div class="top-bar" style="background:var(--danger-red); border-bottom:none; flex-shrink:0;">
+                    <i class="fa-solid fa-chevron-left"
+                        style="color: var(--text-primary);font-size:18px;cursor:pointer;"
+                        onclick="app.navigate('profile')"></i>
+                    <div style="display:flex;align-items:center;gap:10px;">
+                        <div
+                            style="width:32px;height:32px;background:rgba(255,255,255,0.2);border-radius:50%;display:flex;align-items:center;justify-content:center;">
+                            <i class="fa-solid fa-headset" style="color: var(--text-primary);font-size:14px;"></i>
+                        </div>
+                        <div style="text-align:left;">
+                            <div style="color: var(--text-primary);font-weight:700;font-size:14px;">Hỗ trợ JoyCare</div>
+                            <div style="color: var(--text-secondary);font-size:11px;">Trực tuyến</div>
+                        </div>
+                    </div>
+                    <div style="width:24px;"></div>
+                </div>
+                <div id="support-chat-history" style="flex:1;overflow-y:auto;padding:15px;background:var(--bg-dark);">
+                    <div style="text-align:center;margin-bottom:15px;"><span
+                            style="background:var(--bg-card);font-size:11px;padding:5px 10px;border-radius:10px;color:var(--text-secondary);">Hôm
+                            nay</span></div>
+                    <div style="display:flex;align-items:flex-end;gap:8px;margin-bottom:15px;">
+                        <div
+                            style="width:32px;height:32px;background:var(--danger-red);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                            <i class="fa-solid fa-headset" style="color: var(--text-primary);font-size:12px;"></i>
+                        </div>
+                        <div
+                            style="background:var(--bg-card);padding:12px 14px;border-radius:18px;border-bottom-left-radius:4px;max-width:80%;font-size:13px;color: var(--text-primary);line-height:1.5;">
+                            Xin chào! Đây là bộ phận hỗ trợ JoyCare. Bạn muốn hỏi về điều gì ạ?</div>
+                    </div>
+                    <div style="margin-bottom:15px;">
+                        <p style="font-size:12px;color:var(--text-secondary);margin-bottom:8px;">Bạn muốn hỏi về:</p>
+                        <div style="display:flex;flex-direction:column;gap:8px;">
+                            <div onclick="app.supportReply('Hủy lịch đặt dịch vụ')"
+                                style="border:1px solid var(--border-color);padding:10px 14px;border-radius:20px;color:var(--primary-blue);font-size:13px;cursor:pointer;background:rgba(0,122,255,0.05);">
+                                Tôi muốn hủy lịch đặt dịch vụ</div>
+                            <div onclick="app.supportReply('Đơn hàng đến đâu rồi?')"
+                                style="border:1px solid var(--border-color);padding:10px 14px;border-radius:20px;color:var(--primary-blue);font-size:13px;cursor:pointer;background:rgba(0,122,255,0.05);">
+                                JoyPal của tôi đến đâu rồi?</div>
+                            <div onclick="app.supportReply('Kiểm tra trạng thái')"
+                                style="border:1px solid var(--border-color);padding:10px 14px;border-radius:20px;color:var(--primary-blue);font-size:13px;cursor:pointer;background:rgba(0,122,255,0.05);">
+                                Kiểm tra trạng thái lịch hẹn</div>
+                        </div>
+                    </div>
+                </div>
+                <div
+                    style="padding:10px 15px 20px;background:var(--bg-dark);border-top:1px solid var(--border-color);display:flex;gap:8px;align-items:center;flex-shrink:0;">
+                    <input type="text" id="support-input" placeholder="Nhập thông tin..."
+                        style="flex:1;background:var(--bg-card);border:1px solid var(--border-color);color: var(--text-primary);padding:11px 14px;border-radius:22px;font-size:14px;outline:none;font-family:'Inter',sans-serif;">
+                    <button onclick="app.sendSupportMessage()"
+                        style="width:40px;height:40px;border-radius:50%;background:var(--danger-red);color: var(--text-primary);border:none;font-size:16px;cursor:pointer;"><i
+                            class="fa-solid fa-paper-plane"></i></button>
+                </div>
+            </div>
+
+            <!-- Screen: Family Profile -->
+            <div id="screen-family-profile" class="screen" style="display:none;overflow-y:auto;">
+                <div class="top-bar">
+                    <i class="fa-solid fa-chevron-left back-btn" onclick="app.navigate('profile')"></i>
+                    <h2 style="font-family:var(--heading-font); color:var(--text-primary);">Hồ sơ Người thân</h2>
+                    <div style="width:24px;"></div>
+                </div>
+                <div style="padding:15px;">
+                    <div
+                        style="background:var(--bg-card);border-radius:16px;padding:15px;margin-bottom:15px;border:1px solid var(--border-color);display:flex;align-items:center;gap:15px;">
+                        <div
+                            style="width:52px;height:52px;background:rgba(0,122,255,0.15);border-radius:50%;display:flex;align-items:center;justify-content:center;border:2px solid var(--primary-blue);">
+                            <i class="fa-solid fa-person-cane" style="color:var(--primary-blue);font-size:22px;"></i>
+                        </div>
+                        <div style="flex:1;">
+                            <div style="font-weight:bold;color: var(--text-primary);font-size:15px;">Bác Nguyễn Văn A
+                                (Bố)</div>
+                            <div style="color:var(--text-secondary);font-size:12px;">75 tuổi • Hà Nội</div>
+                            <div style="margin-top:4px;"><span
+                                    style="background:rgba(52,199,89,0.15);color:var(--success-green);font-size:11px;padding:2px 8px;border-radius:8px;">Chăm
+                                    sóc chính</span></div>
+                        </div>
+                    </div>
+                    <h3
+                        style="color: var(--text-primary);font-size:15px;margin-bottom:12px;font-family:var(--heading-font);">
+                        Lịch sử dịch vụ của Người thân</h3>
+                    <div id="family-history-list">
+                        <div style="text-align:center;padding:20px;color:var(--text-secondary);font-size:13px;">Chưa có
+                            lịch sử. Hãy đặt lịch dịch vụ đầu tiên!</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Bottom Navigation Menu -->
+            <div class="bottom-nav">
+                <a class="nav-item active" data-target="home" onclick="app.navigate('home')">
+                    <i class="fa-solid fa-border-all nav-icon fs-lg"></i>
+                    Trang chủ
+                </a>
+                <a class="nav-item" data-target="booking" onclick="app.navigate('booking')">
+                    <i class="fa-solid fa-calendar-plus nav-icon fs-lg"></i>
+                    Đặt lịch
+                </a>
+                <a class="nav-item" data-target="tracking" onclick="app.navigate('tracking')">
+                    <i class="fa-solid fa-map-location-dot nav-icon fs-lg"></i>
+                    Theo dõi
+                </a>
+                <a class="nav-item" data-target="profile" onclick="app.navigate('profile')">
+                    <i class="fa-solid fa-circle-user nav-icon fs-lg"></i>
+                    Hồ sơ
+                </a>
+            </div>
+
+            <!-- iPhone 15 Home Indicator -->
+            <div class="home-indicator"></div>
+
+        </div> <!-- end #app-container -->
+    </div> <!-- end #device-frame -->
+
+    <style>
+        .tag.selected,
+        div[onclick*="toggleTag"].selected {
+            border-color: var(--primary-blue) !important;
+            background-color: rgba(0, 122, 255, 0.12) !important;
+            color: var(--primary-blue) !important;
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+                opacity: 1;
+            }
+
+            100% {
+                transform: scale(3);
+                opacity: 0;
+            }
+        }
+
+        /* White calendar icon fix */
+        input[type="date"]::-webkit-calendar-picker-indicator {
+            filter: invert(1);
+            cursor: pointer;
+            opacity: 0.9;
+        }
+
+        /* Home indicator bar */
+        .home-indicator {
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--bg-dark);
+            flex-shrink: 0;
+        }
+
+        .home-indicator::after {
+            content: '';
+            display: block;
+            width: 120px;
+            height: 5px;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 3px;
+        }
+
+        /* Rating modal display fix */
+        #rating-modal {
+            display: none;
+        }
+
+        #rating-modal.active {
+            display: flex !important;
+        }
+
+        /* Photo update bubble in timeline */
+        .photo-update {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            margin-bottom: 15px;
+        }
+
+        .photo-update img {
+            width: 160px;
+            height: 110px;
+            border-radius: 12px;
+            object-fit: cover;
+            margin-top: 8px;
+            border: 1px solid var(--border-color);
+        }
+    </style>
+
+    <script src="js/app.js"></script>
+</body>
+
+</html>

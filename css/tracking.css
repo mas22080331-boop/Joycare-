@@ -1,0 +1,312 @@
+/* Tracking Screen */
+
+#screen-tracking {
+    position: relative;
+    height: 100%;
+}
+
+.map-bg {
+    background-color: var(--bg-dark);
+    height: 60%;
+    position: relative;
+    /* Simulate map background with a dark grid or image if available */
+    background-image: radial-gradient(var(--border-color) 1px, transparent 1px);
+    background-size: 20px 20px;
+}
+
+.tracking-top-bar {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    z-index: 10;
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.8), transparent);
+}
+
+.tracking-title h2 {
+    font-size: 18px;
+    margin-bottom: 5px;
+}
+
+.status-live {
+    font-size: 11px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    color: var(--text-secondary);
+}
+
+.dot-green {
+    width: 8px;
+    height: 8px;
+    background-color: var(--success-green);
+    border-radius: 50%;
+    box-shadow: 0 0 8px var(--success-green);
+}
+
+.map-actions {
+    position: absolute;
+    top: 80px;
+    left: 20px;
+    right: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.btn-map-open {
+    background-color: rgba(43, 94, 226, 0.2);
+    color: var(--primary-blue);
+    border: 1px solid var(--primary-blue);
+    padding: 8px 12px;
+    border-radius: 8px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.map-btns-right {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.round-btn {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: var(--bg-card);
+    border: none;
+    font-size: 16px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+}
+
+.text-green {
+    color: var(--success-green);
+}
+
+/* Fake map pin for the simulation */
+.map-pin {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.map-pin img {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    border: 2px solid white;
+    z-index: 2;
+}
+
+.pin-badge {
+    background-color: var(--primary-orange);
+    color: black;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 10px;
+    position: absolute;
+    bottom: 25px;
+    right: -5px;
+    z-index: 3;
+    border: 2px solid var(--bg-dark);
+}
+
+.pin-label {
+    background-color: var(--bg-card);
+    padding: 8px 12px;
+    border-radius: 20px;
+    font-size: 11px;
+    margin-top: 10px;
+    white-space: nowrap;
+    border: 1px solid var(--border-color);
+}
+
+/* Timeline Sheet */
+.timeline-sheet {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 45%;
+    background-color: var(--ios-glass);
+    backdrop-filter: blur(35px);
+    -webkit-backdrop-filter: blur(35px);
+    border-radius: 32px 32px 0 0;
+    box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    z-index: 20;
+    border-top: 0.5px solid var(--border-color);
+}
+
+.sheet-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+}
+
+.sheet-header h3 {
+    font-size: 18px;
+}
+
+.badge-dark {
+    background-color: rgba(43, 94, 226, 0.2);
+    color: var(--primary-blue);
+    padding: 5px 15px;
+    border-radius: 15px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.timeline {
+    flex: 1;
+    overflow-y: auto;
+    padding: 0 20px 20px 20px;
+}
+
+.timeline::-webkit-scrollbar {
+    display: none;
+}
+
+.timeline-item {
+    position: relative;
+    padding-left: 30px;
+    margin-bottom: 25px;
+}
+
+.timeline-item::before {
+    content: '';
+    position: absolute;
+    left: 8px;
+    top: 5px;
+    bottom: -35px;
+    width: 2px;
+    background-color: var(--border-color);
+}
+
+.timeline-item:last-child::before {
+    display: none;
+}
+
+.tl-dot {
+    position: absolute;
+    left: 0;
+    top: 2px;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background-color: var(--bg-card);
+    border: 4px solid var(--border-color);
+    z-index: 2;
+}
+
+.tl-dot-active {
+    border-color: var(--primary-blue);
+    box-shadow: 0 0 10px rgba(43, 94, 226, 0.5);
+}
+
+.tl-time {
+    font-size: 12px;
+    color: var(--text-secondary);
+    margin-bottom: 8px;
+    font-weight: 600;
+}
+
+.active .tl-time {
+    color: var(--primary-blue);
+}
+
+.tl-card {
+    background-color: var(--bg-dark);
+    border-radius: 16px;
+    padding: 15px;
+    border: 1px solid var(--border-color);
+    color: var(--text-primary);
+}
+
+.tl-card-header {
+    font-size: 14px;
+    margin-bottom: 5px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.tl-card-body {
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+.bg-darker {
+    background-color: #121212;
+}
+
+.opacity-70 {
+    opacity: 0.7;
+}
+
+.chat-input-area {
+    padding: 15px 20px 25px 20px;
+    /* space for home indicator */
+    background-color: transparent;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.btn-sos {
+    width: 40px;
+    height: 40px;
+    border-radius: 12px;
+    background-color: var(--danger-red);
+    color: white;
+    border: none;
+    font-size: 18px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 0 15px rgba(255, 59, 48, 0.4);
+}
+
+.input-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.chat-input {
+    width: 100%;
+    background-color: #2A2A2A;
+    border: none;
+    padding: 12px 45px 12px 15px;
+    border-radius: 20px;
+    color: white;
+    font-size: 13px;
+    outline: none;
+}
+
+.send-btn {
+    position: absolute;
+    right: 15px;
+    font-size: 16px;
+    cursor: pointer;
+}

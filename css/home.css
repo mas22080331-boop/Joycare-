@@ -1,0 +1,385 @@
+/* Home Screen Styles */
+
+.header-blue {
+    background: var(--header-grad);
+    border-radius: 0 0 32px 32px;
+    padding: 20px 20px 85px 20px;
+    position: relative;
+    /* Removed overflow: hidden to allow the wallet card to float outside */
+    margin-bottom: 50px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+.header-patterns {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    pointer-events: none;
+    z-index: 0;
+    overflow: hidden;
+    /* Patterns stay inside the header */
+    border-radius: 0 0 32px 32px;
+}
+
+.pattern-circle {
+    position: absolute;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.pattern-1 {
+    width: 150px;
+    height: 150px;
+    top: -50px;
+    right: -30px;
+}
+
+.pattern-2 {
+    width: 80px;
+    height: 80px;
+    bottom: 20px;
+    left: -20px;
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.pattern-3 {
+    width: 40px;
+    height: 40px;
+    top: 60px;
+    left: 30%;
+    background: rgba(255, 255, 255, 0.03);
+}
+
+.header-top {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 25px;
+}
+
+.user-avatar {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.greeting {
+    flex: 1;
+    margin-left: 15px;
+}
+
+.greeting-sub {
+    font-size: 13px;
+    color: var(--text-secondary);
+    margin-bottom: 2px;
+}
+
+.greeting-main {
+    font-size: 18px;
+    font-weight: 700;
+    line-height: 1.2;
+    color: var(--text-primary);
+}
+
+.icon-bell {
+    background-color: var(--ios-glass);
+    backdrop-filter: blur(5px);
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 18px;
+    color: var(--text-primary);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Wallet Balance Card - iOS Glassmorphism */
+.wallet-balance-card {
+    position: absolute;
+    bottom: -32px;
+    left: 15px;
+    right: 15px;
+    background: var(--ios-glass);
+    backdrop-filter: blur(40px);
+    -webkit-backdrop-filter: blur(40px);
+    border: 1px solid var(--border-color);
+    border-radius: 24px;
+    padding: 16px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+    z-index: 10;
+}
+
+.balance-item {
+    display: flex;
+    flex-direction: column;
+}
+
+.balance-divider {
+    width: 1px;
+    height: 38px;
+    background: #F0F0F0;
+    margin: 0 5px;
+}
+
+.balance-label {
+    font-size: 11px;
+    color: var(--text-secondary);
+    margin-bottom: 6px;
+    font-weight: 500;
+}
+
+.balance-value {
+    font-size: 17px;
+    font-weight: 900;
+    color: var(--text-primary);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.balance-value span {
+    line-height: 1;
+}
+
+.balance-value i {
+    font-size: 14px;
+}
+
+.joypay-color {
+    color: #2B5EE2;
+}
+
+.joypoints-color {
+    color: #FF9F0A;
+}
+
+.btn-topup {
+    background: rgba(43, 94, 226, 0.1);
+    color: #2B5EE2;
+    border: none;
+    border-radius: 10px;
+    padding: 6px 10px;
+    font-size: 11px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.active-care-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 24px;
+    padding: 15px;
+    position: absolute;
+    bottom: -40px;
+    left: 20px;
+    right: 20px;
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.1);
+}
+
+.care-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.care-avatar-wrapper {
+    position: relative;
+}
+
+.care-avatar {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    border: 2px solid var(--primary-orange);
+}
+
+.status-dot {
+    position: absolute;
+    bottom: 2px;
+    right: 2px;
+    width: 12px;
+    height: 12px;
+    background-color: var(--success-green);
+    border-radius: 50%;
+    border: 2px solid #1C51E6;
+}
+
+.care-info {
+    flex: 1;
+    margin-left: 12px;
+}
+
+.care-title {
+    font-weight: 700;
+    font-size: 15px;
+    margin-bottom: 4px;
+    color: var(--text-primary);
+}
+
+.care-desc {
+    font-size: 12px;
+    color: var(--text-secondary);
+}
+
+.smile-icon {
+    font-size: 24px;
+    color: var(--primary-orange);
+    background-color: rgba(255, 159, 10, 0.2);
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn-care-action {
+    background-color: rgba(0, 0, 0, 0.2);
+    border: none;
+    color: white;
+    width: 100%;
+    padding: 12px;
+    border-radius: 12px;
+    font-size: 13px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.home-content {
+    padding: 0 20px;
+}
+
+.about-card {
+    background-color: var(--bg-card);
+    border-radius: 20px;
+    padding: 20px;
+    margin-bottom: 25px;
+}
+
+.about-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+.about-header h3 {
+    font-size: 16px;
+    font-weight: 700;
+}
+
+.about-text {
+    font-size: 13px;
+    color: var(--text-secondary);
+    line-height: 1.5;
+    margin-bottom: 20px;
+}
+
+.section-title {
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 15px;
+}
+
+.services-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+    margin-bottom: 25px;
+}
+
+.service-card {
+    background-color: var(--bg-card);
+    border-radius: 24px;
+    padding: 20px 15px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    cursor: pointer;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+    transition: transform 0.2s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.service-card:active {
+    transform: scale(0.96);
+}
+
+.service-icon {
+    background-color: #2A2A2A;
+    width: 52px;
+    height: 52px;
+    border-radius: 22.5%;
+    /* Apple Squircle */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 24px;
+    margin-bottom: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.service-name {
+    font-weight: 700;
+    font-size: 14px;
+    margin-bottom: 5px;
+}
+
+.service-desc {
+    font-size: 11px;
+    color: var(--text-secondary);
+}
+
+.text-primary {
+    color: #2B5EE2 !important;
+}
+
+.text-success {
+    color: #34C759 !important;
+}
+
+.text-purple {
+    color: #AF52DE !important;
+}
+
+.text-light {
+    color: #E5E5EA !important;
+}
+
+.vip-badge {
+    position: absolute;
+    top: 0;
+    right: 0;
+    background-color: var(--primary-orange);
+    color: black;
+    font-size: 10px;
+    font-weight: 800;
+    padding: 4px 8px;
+    border-radius: 0 20px 0 10px;
+}
+
+.section-header-flex {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.text-link {
+    color: var(--primary-blue);
+    font-size: 13px;
+    text-decoration: none;
+    font-weight: 600;
+}
