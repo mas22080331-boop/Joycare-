@@ -1,0 +1,255 @@
+/* Device Frame Simulation (iPhone 15 Pro - Premium) */
+
+:root {
+    --device-radius: 54px;
+    --bezel-width: 8px;
+    /* High-fidelity thin bezel */
+    --titanium-light: #4c4c4e;
+    /* Natural Titanium highlight color */
+    --titanium-dark: #1c1c1e;
+    /* Natural Titanium deep color */
+    --rim-highlight: rgba(255, 255, 255, 0.4);
+    /* Specular edge highlight */
+}
+
+body {
+    background: #282a2d;
+    /* Solid dark grey matching the provided mockup image */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+    font-family: 'Inter', sans-serif;
+}
+
+
+#device-frame {
+    width: 393px;
+    height: 852px;
+    padding: var(--bezel-width);
+    /* Simulated brushed Natural Titanium chassis using a precise linear gradient */
+    background: linear-gradient(135deg, #2a2a2c 0%, #3a3a3c 50%, #1a1a1c 100%);
+    border-radius: var(--device-radius);
+    position: relative;
+    margin: 40px auto;
+    /* Precise chamfered metallic highlights and natural chassis shadows */
+    box-shadow:
+        0 0 0 1px rgba(255, 255, 255, 0.1),
+        /* Micro-highlight on outermost edge */
+        0 0 0 1.5px #444,
+        /* Primary metallic rim (highlight) */
+        0 0 0 4.5px #0a0a0a,
+        /* Main titanium chassis thickness */
+        0 0 0 5.5px #3a3a3a,
+        /* Outer chassis rim detail */
+        0 30px 100px rgba(0, 0, 0, 0.8),
+        /* Deep high-quality drop shadow */
+        inset 0 0 2px rgba(255, 255, 255, 0.05);
+    /* Subtle inner edge reflection */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: none;
+}
+
+#app-container {
+    width: 100%;
+    height: 100%;
+    background-color: var(--bg-dark);
+    border-radius: 46px;
+    /* Optimized screen curvature */
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    /* High-fidelity Glass Gap with subtle inner reflection */
+    box-shadow:
+        0 0 0 1px #000,
+        inset 0 0 4px rgba(255, 255, 255, 0.05);
+    /* Soft glass-edge reflection */
+}
+
+
+/* 3D Physical Buttons - Ultra-Realistic Metallic Simulation */
+.device-button {
+    position: absolute;
+    width: 6px;
+    /* Extremely high-fidelity specular highlights for Natural Titanium */
+    background: linear-gradient(to bottom,
+            #9a9a9c 0%,
+            /* Brighter specular highlight at the top */
+            #6a6a6c 10%,
+            /* Top metallic body */
+            #2a2a2c 50%,
+            /* Mid-tone titanium */
+            #050505 100%
+            /* Deepest occlusion at bottom */
+        );
+    border-radius: 4px;
+    z-index: 10;
+    /* Composite shadows for tactile depth and chassis housing separation */
+    box-shadow:
+        0 3px 6px rgba(0, 0, 0, 0.8),
+        /* Deeper external drop shadow */
+        inset 0 1.5px 0 rgba(255, 255, 255, 0.45),
+        /* Brighter tactile specular highlight */
+        inset 0 -2px 1.5px rgba(0, 0, 0, 0.7),
+        /* Deep bottom edge occlusion */
+        -1.5px 0 3px rgba(0, 0, 0, 0.8);
+    /* Clear shadow against the chassis */
+    border: 0.5px solid #000;
+}
+
+/* Button Housing Effect (The 'slit' in the titanium frame) */
+.device-button::before {
+    content: '';
+    position: absolute;
+    inset: -3px -1.5px;
+    background: #000;
+    /* Pure black inner housing for max contrast */
+    z-index: -1;
+    border-radius: 6px;
+    box-shadow:
+        inset 0 0 3px rgba(255, 255, 255, 0.15),
+        /* Housing edge highlight */
+        0 0 0 1px rgba(255, 255, 255, 0.05);
+    /* Micro-reflection on outer chassis rim */
+}
+
+/* Position adjustment for better protrusion visibility */
+.btn-left {
+    left: -7.5px;
+}
+
+
+#action-btn {
+    top: 175px;
+    height: 28px;
+}
+
+#vol-up-btn {
+    top: 225px;
+    height: 58px;
+}
+
+#vol-down-btn {
+    top: 295px;
+    height: 58px;
+}
+
+/* Right component: Power Button (Longer) */
+#power-btn {
+    top: 260px;
+    right: -7px;
+    /* Positioned to allow housing to show slightly */
+    height: 90px;
+    width: 6px;
+}
+
+
+/* High-Fidelity Dynamic Island with Lens Details */
+.dynamic-island {
+    position: absolute;
+    top: 12px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 124px;
+    height: 36px;
+    background-color: #000000;
+    border-radius: 20px;
+    z-index: 10000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 10px;
+}
+
+/* Simulated Camera & FaceID Lenses */
+.dynamic-island::after {
+    content: '';
+    width: 12px;
+    height: 12px;
+    background: radial-gradient(circle at 30% 30%, #1a1a1a 0%, #000 70%);
+    border-radius: 50%;
+    box-shadow:
+        inset 0 0 2px rgba(255, 255, 255, 0.1),
+        35px 0 0 -2px #0a0a0a;
+    /* FaceID sensor dot */
+    position: absolute;
+    right: 25px;
+}
+
+
+/* Status Bar */
+.status-bar {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 50px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 28px;
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--text-primary);
+    z-index: 9999;
+    pointer-events: none;
+    letter-spacing: -0.2px;
+}
+
+.status-left {
+    padding-top: 10px;
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+}
+
+.status-right {
+    display: flex;
+    gap: 6px;
+    padding-top: 10px;
+    align-items: center;
+}
+
+/* Home Indicator - iOS standard */
+.home-indicator {
+    height: 34px;
+    /* iOS standard home gesture area height */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    flex-shrink: 0;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 9999;
+}
+
+.home-indicator::after {
+    content: '';
+    display: block;
+    width: 134px;
+    height: 5px;
+    background: var(--text-primary);
+    opacity: 0.9;
+    border-radius: 100px;
+}
+
+/* Adjust screens for modern iOS Safe Areas */
+.screen {
+    padding-top: 50px;
+    /* Status bar space */
+    padding-bottom: calc(var(--bottom-nav-height) + 34px);
+    /* Navigation + Home indicator area */
+}
+
+/* No Menu screens padding fix */
+#screen-role-selection,
+#screen-login,
+#screen-register {
+    padding-bottom: 34px;
+}

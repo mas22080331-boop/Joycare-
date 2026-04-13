@@ -1,0 +1,2258 @@
+/* joypal.css - Provider Dispatcher Interface Styles */
+
+:root {
+    --joypal-accent: #00897B;
+    --joypal-green-deep: #002420;
+    --joypal-green-mid: #004D40;
+    --joypal-green-bright: #00897B;
+    --joypal-gradient: linear-gradient(135deg, #004D40 0%, #002420 100%);
+    --joypal-glow: rgba(0, 137, 123, 0.4);
+}
+
+/* 1. Base Setup for Map Dispatcher */
+#screen-joypal-home {
+    padding: 0 !important;
+    overflow: hidden !important;
+    position: relative;
+    background: #000;
+}
+
+#screen-joypal-home.active {
+    display: block !important;
+}
+
+/* 2. Map System */
+.map-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    transition: filter 0.6s cubic-bezier(0.4, 0, 0.2, 1), transform 0.6s ease;
+}
+
+.map-container.blurred {
+    filter: blur(12px) brightness(0.65);
+    transform: scale(1.05);
+}
+
+/* 2.1 Professional Radar System */
+.radar-overlay {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 0;
+    height: 0;
+    border: 2px solid var(--joypal-accent);
+    border-radius: 50%;
+    z-index: 4;
+    opacity: 0;
+    pointer-events: none;
+    box-shadow: 0 0 20px var(--joypal-glow);
+}
+
+.radar-overlay.active {
+    animation: radar-sweep 2s infinite ease-out;
+}
+
+@keyframes radar-sweep {
+    0% {
+        width: 0;
+        height: 0;
+        opacity: 0.8;
+    }
+
+    100% {
+        width: 150%;
+        height: 150%;
+        opacity: 0;
+    }
+}
+
+.scanner-line {
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 200%;
+    height: 2px;
+    background: linear-gradient(90deg, transparent 0%, var(--joypal-accent) 50%, transparent 100%);
+    z-index: 4;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.scanner-line.active {
+    animation: scan-vertical 3s infinite linear;
+    opacity: 0.4;
+}
+
+@keyframes scan-vertical {
+    0% {
+        top: 0;
+    }
+
+    100% {
+        top: 100%;
+    }
+}
+
+
+.map-backdrop {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: none;
+    opacity: 0.6;
+    transition: opacity 0.5s ease;
+}
+
+.map-backdrop.active {
+    display: block;
+}
+
+.map-live {
+    width: 100%;
+    height: 100%;
+    display: none;
+    background: #111;
+}
+
+.map-live.active {
+    display: block;
+}
+
+/* Mode Toggle */
+.map-mode-toggle {
+    position: absolute;
+    top: 110px;
+    right: 15px;
+    width: 40px;
+    height: 40px;
+    background: var(--ios-glass);
+    backdrop-filter: blur(15px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    z-index: 10;
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+}
+
+/* Status Dot Simulation */
+#joypal-status-dot-container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 5;
+    pointer-events: none;
+    display: none;
+    /* Only visible when online */
+}
+
+#joypal-status-dot-container.active {
+    display: block;
+}
+
+#joypal-status-dot {
+    width: 14px;
+    height: 14px;
+    background: #34C759;
+    border: 3px solid white;
+    border-radius: 50%;
+    box-shadow: 0 0 10px rgba(52, 199, 89, 0.5);
+    position: relative;
+    z-index: 2;
+}
+
+.status-pulse-ring {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 14px;
+    height: 14px;
+    background: rgba(52, 199, 89, 0.4);
+    border-radius: 50%;
+    animation: statusPulse 2s infinite;
+}
+
+@keyframes statusPulse {
+    0% {
+        transform: translate(-50%, -50%) scale(1);
+        opacity: 1;
+    }
+
+    100% {
+        transform: translate(-50%, -50%) scale(4);
+        opacity: 0;
+    }
+}
+
+/* 3. Flat stats header - Pro Version */
+.joypal-dispatcher-header {
+    position: absolute;
+    top: 55px;
+    /* Alignment for iPhone 15 Pro */
+    left: 15px;
+    right: 15px;
+    height: 48px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 100;
+    transition: all 0.5s ease;
+}
+
+.joypal-dispatcher-header.hide-offline {
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(-20px);
+}
+
+.dispatcher-stats-pill {
+    background: rgba(44, 44, 46, 0.85);
+    /* Apple Dark Gray */
+    backdrop-filter: blur(20px) saturate(180%);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    height: 48px;
+    padding: 0 16px;
+    border-radius: 24px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    pointer-events: auto;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    animation: header-breathe 8s infinite ease-in-out;
+}
+
+@keyframes header-breathe {
+
+    0%,
+    100% {
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    }
+
+    50% {
+        box-shadow: 0 8px 32px rgba(0, 137, 123, 0.2);
+    }
+}
+
+.dispatcher-stats-pill .currency {
+    font-size: 11px;
+    font-weight: 700;
+    opacity: 0.6;
+}
+
+.dispatcher-stats-pill .value {
+    font-size: 18px;
+    font-weight: 800;
+}
+
+.stat-divider {
+    width: 1px;
+    height: 20px;
+    background: rgba(255, 255, 255, 0.2);
+    margin: 0 4px;
+}
+
+.dispatcher-stats-pill .count {
+    font-size: 18px;
+    font-weight: 800;
+    color: var(--success-green);
+}
+
+.dispatcher-profile-group {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    pointer-events: auto;
+    cursor: pointer;
+}
+
+.dispatcher-rating {
+    background: var(--ios-glass);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 6px 12px;
+    border-radius: 12px;
+    font-size: 13px;
+    font-weight: 800;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.dispatcher-rating i {
+    color: #FFD700;
+}
+
+.dispatcher-avatar {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    border: 2px solid white;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+}
+
+/* 4. Connection Pill Button */
+/* Central Connection Overlay */
+.center-connect-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 50;
+    transition: all 0.5s ease;
+}
+
+.center-connect-overlay.hidden {
+    opacity: 0;
+    pointer-events: none;
+    transform: scale(1.1);
+}
+
+.btn-primary-connect {
+    width: 140px;
+    height: 140px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(25px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+    cursor: pointer;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.btn-primary-connect:hover {
+    transform: scale(1.05);
+}
+
+.btn-primary-connect:active {
+    transform: scale(0.9);
+}
+
+.btn-primary-connect i {
+    font-size: 40px;
+    margin-bottom: 10px;
+    color: #34C759;
+}
+
+.btn-primary-connect i.power-icon {
+    font-size: 50px;
+    margin-bottom: 5px;
+    color: white;
+}
+
+.btn-primary-connect .label {
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+}
+
+.secondary-connect-hint {
+    margin-top: 25px;
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 13px;
+    font-weight: 500;
+    animation: breathe 3s infinite ease-in-out;
+}
+
+@keyframes breathe {
+
+    0%,
+    100% {
+        opacity: 0.4;
+    }
+
+    50% {
+        opacity: 0.9;
+    }
+}
+
+.connection-pill-wrapper {
+    position: absolute;
+    bottom: 100px;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: center;
+    z-index: 10;
+    transition: all 0.5s ease;
+}
+
+.connection-pill-wrapper.hide-offline {
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(20px);
+}
+
+.dispatcher-avatar:active {
+    transform: scale(0.9);
+}
+
+/* 5. Bottom Sheet Drawing System */
+.bottom-sheet {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: #1a1a1c;
+    border-radius: 30px 30px 0 0;
+    z-index: 15;
+    transform: translateY(calc(100% - 70px));
+    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.5);
+}
+
+.bottom-sheet.open {
+    transform: translateY(0);
+    height: auto;
+    max-height: 80%;
+}
+
+.sheet-handle {
+    width: 40px;
+    height: 5px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 3px;
+    margin: 12px auto;
+    cursor: pointer;
+}
+
+.sheet-content {
+    padding: 10px 20px 40px 20px;
+}
+
+.sheet-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 0;
+}
+
+.sheet-row.clickable:active {
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.sheet-info {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.sheet-info .primary {
+    font-size: 15px;
+    font-weight: 700;
+    color: white;
+}
+
+.sheet-info .secondary {
+    font-size: 12px;
+    color: var(--text-secondary);
+}
+
+.sheet-divider {
+    height: 1px;
+    background: rgba(255, 255, 255, 0.05);
+    margin: 5px 0;
+}
+
+.sheet-action-row {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.btn-disconnect {
+    color: var(--danger-red);
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+/* 6. Notice Overlay */
+.notice-container {
+    position: absolute;
+    top: 170px;
+    left: 15px;
+    right: 15px;
+    z-index: 11;
+    pointer-events: none;
+}
+
+.notice-box {
+    background: #E64A19;
+    /* Warning Orange */
+    color: white;
+    padding: 15px;
+    border-radius: 12px;
+    display: flex;
+    gap: 12px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+    pointer-events: auto;
+    animation: slideInUp 0.4s ease;
+}
+
+.notice-box i {
+    font-size: 20px;
+    margin-top: 2px;
+}
+
+.notice-text {
+    flex: 1;
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+.notice-text a {
+    color: white;
+    text-decoration: underline;
+    font-weight: 700;
+}
+
+/* 8. Bottom Sheet Refinements */
+.auto-status-bar {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 12px;
+    padding: 12px 15px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.auto-status-bar span {
+    font-size: 13px;
+    font-weight: 600;
+    color: white;
+    flex: 1;
+}
+
+.power-off-icon {
+    width: 32px;
+    height: 32px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.dispatcher-action-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.action-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    text-align: center;
+    cursor: pointer;
+}
+
+.action-icon {
+    width: 50px;
+    height: 50px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    color: white;
+}
+
+.action-item span {
+    font-size: 10px;
+    color: var(--text-secondary);
+    font-weight: 600;
+}
+
+.sheet-info-card {
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 12px;
+    padding: 15px;
+    border-left: 4px solid var(--joypal-accent);
+}
+
+.sheet-info-card strong {
+    display: block;
+    font-size: 14px;
+    color: white;
+    margin-bottom: 5px;
+}
+
+.sheet-info-card p {
+    font-size: 12px;
+    color: var(--text-secondary);
+    margin: 0;
+}
+
+/* 9. JoyPal Account Screen */
+#screen-joypal-account {
+    background: #111;
+}
+
+.joypal-account-header {
+    background: var(--joypal-bg-gradient);
+    padding: 60px 20px 20px 20px;
+    border-radius: 0 0 30px 30px;
+}
+
+.joypal-account-header .header-main {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: white;
+    margin-bottom: 25px;
+}
+
+.joypal-account-header .header-main h2 {
+    font-size: 20px;
+    font-weight: 800;
+}
+
+.provider-profile-card {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    padding: 15px;
+    border-radius: 20px;
+    color: white;
+}
+
+.provider-profile-card .avatar {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+}
+
+.provider-profile-card .info .name {
+    font-size: 18px;
+    font-weight: 800;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.provider-profile-card .info .rating {
+    font-size: 13px;
+    opacity: 0.8;
+    margin-top: 4px;
+}
+
+.joypal-financial-overview {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    padding: 20px;
+}
+
+.financial-card {
+    background: #1c1c1e;
+    padding: 15px 12px;
+    border-radius: 16px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.financial-card .card-icon {
+    font-size: 20px;
+    color: #ffd700;
+}
+
+.financial-card .card-label {
+    font-size: 11px;
+    color: var(--text-secondary);
+    font-weight: 700;
+}
+
+.financial-card .card-value {
+    font-size: 15px;
+    font-weight: 800;
+    color: white;
+}
+
+.joypal-account-menu {
+    padding: 0 20px;
+}
+
+.joypal-account-menu .menu-item {
+    background: #1c1c1e;
+    padding: 18px;
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 10px;
+    cursor: pointer;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.joypal-account-menu .menu-item i:first-child {
+    font-size: 18px;
+    width: 24px;
+    text-align: center;
+    color: var(--joypal-accent);
+}
+
+.joypal-account-menu .menu-item span {
+    flex: 1;
+    font-size: 15px;
+    font-weight: 600;
+    color: white;
+}
+
+.joypal-account-menu .menu-item i:last-child {
+    font-size: 12px;
+    opacity: 0.3;
+    color: white;
+}
+
+/* 10. Financial Common Screens */
+.top-bar-financial {
+    padding: 60px 20px 20px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #111;
+    color: white;
+}
+
+.top-bar-financial h2 {
+    font-size: 18px;
+    font-weight: 800;
+}
+
+.financial-content {
+    padding: 20px;
+    height: calc(100% - 180px);
+    overflow-y: auto;
+}
+
+.empty-state-card {
+    background: #1c1c1e;
+    border-radius: 20px;
+    padding: 40px 30px;
+    text-align: center;
+    margin-top: 20px;
+}
+
+.empty-state-card h3 {
+    font-size: 18px;
+    font-weight: 800;
+    color: white;
+    margin-top: 20px;
+}
+
+.empty-state-card p {
+    font-size: 14px;
+    color: var(--text-secondary);
+    line-height: 1.5;
+}
+
+.summary-list-item {
+    background: #1c1c1e;
+    padding: 18px;
+    border-radius: 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: white;
+    margin-top: 20px;
+    font-size: 14px;
+}
+
+.financial-bottom-nav {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 85px;
+    background: #1c1c1e;
+    display: flex;
+    padding: 10px 0 25px 0;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.financial-bottom-nav .nav-item {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+    color: var(--text-secondary);
+    cursor: pointer;
+}
+
+.financial-bottom-nav .nav-item i {
+    font-size: 20px;
+}
+
+.financial-bottom-nav .nav-item span {
+    font-size: 11px;
+    font-weight: 700;
+}
+
+/* Withdrawal Method Chips */
+.method-chip {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 16px;
+    padding: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    color: var(--text-secondary);
+}
+
+.method-chip.active {
+    background: rgba(0, 122, 255, 0.1);
+    border-color: var(--primary-blue);
+    color: white;
+}
+
+.method-chip i {
+    font-size: 16px;
+    color: var(--primary-blue);
+}
+
+.method-chip span {
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.login-logo-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    filter: drop-shadow(0 5px 15px rgba(0, 122, 255, 0.3));
+}
+
+/* Transaction History Items */
+.transaction-item {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 20px;
+    padding: 16px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 12px;
+    transition: transform 0.2s ease;
+}
+
+.transaction-item:active {
+    transform: scale(0.98);
+    background: rgba(255, 255, 255, 0.06);
+}
+
+.txn-icon-wrapper {
+    width: 48px;
+    height: 48px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    color: var(--primary-blue);
+    flex-shrink: 0;
+}
+
+.txn-info {
+    flex: 1;
+}
+
+.txn-info .method {
+    font-size: 14px;
+    font-weight: 700;
+    color: white;
+    margin-bottom: 4px;
+}
+
+.txn-info .date {
+    font-size: 11px;
+    color: #888;
+}
+
+.txn-amount-status {
+    text-align: right;
+}
+
+.txn-amount-status .amount {
+    font-size: 15px;
+    font-weight: 800;
+    color: var(--danger-red);
+    margin-bottom: 5px;
+}
+
+.status-badge-mini {
+    display: inline-block;
+    padding: 3px 8px;
+    border-radius: 6px;
+    font-size: 9px;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+.status-badge-mini.success {
+    background: rgba(52, 199, 89, 0.1);
+    color: #34C759;
+}
+
+.status-badge-mini.pending {
+    background: rgba(255, 159, 10, 0.1);
+    color: #ff9f0a;
+}
+
+/* Action Grid Refinement */
+.dispatcher-action-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 15px;
+    margin: 20px 0;
+    padding: 0 5px;
+}
+
+.action-icon i {
+    font-size: 20px;
+}
+
+.financial-bottom-nav .nav-item.active {
+    color: #34C759 !important;
+}
+
+.reward-tabs {
+    display: flex;
+    justify-content: space-around;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    margin-bottom: 20px;
+}
+
+.reward-tabs span {
+    padding-bottom: 10px;
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--text-secondary);
+    cursor: pointer;
+}
+
+.reward-tabs span.active {
+    color: #34C759;
+    border-bottom: 2px solid #34C759;
+}
+
+.reward-card {
+    background: #1c1c1e;
+    border-radius: 20px;
+    padding: 20px;
+    color: white;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.gem-progress-wrapper {
+    margin-top: 20px;
+}
+
+.gem-points {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 8px;
+}
+
+.gem-point {
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--text-secondary);
+    display: flex;
+    align-items: center;
+    gap: 3px;
+}
+
+.progress-track {
+    height: 6px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 3px;
+    overflow: hidden;
+}
+
+.progress-fill {
+    height: 100%;
+    background: var(--success-green);
+    border-radius: 3px;
+}
+
+/* 12. Wallet Specifics */
+.wallet-item {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 20px;
+    background: #1c1c1e;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    color: white;
+    cursor: pointer;
+}
+
+.wallet-item:last-child {
+    border-bottom: none;
+    border-radius: 0 0 20px 20px;
+}
+
+.wallet-item:first-child {
+    border-radius: 20px 20px 0 0;
+}
+
+.wallet-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    font-weight: 800;
+}
+
+.wallet-info {
+    flex: 1;
+}
+
+.wallet-info .title {
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.wallet-info .balance {
+    font-size: 13px;
+    opacity: 0.6;
+}
+
+.flex-between {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* 13. Rate Scroller & Cards */
+.joypal-rate-scroller {
+    display: flex;
+    gap: 12px;
+    padding: 0 20px 20px 20px;
+    overflow-x: auto;
+    scrollbar-width: none;
+    /* Hide scrollbar */
+}
+
+.joypal-rate-scroller::-webkit-scrollbar {
+    display: none;
+}
+
+.rate-card {
+    min-width: 170px;
+    background: #1c1c1e;
+    border-radius: 16px;
+    padding: 15px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.rate-header {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--text-secondary);
+    margin-bottom: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.rate-header .badge {
+    font-size: 9px;
+    background: var(--joypal-accent);
+    color: white;
+    padding: 2px 6px;
+    border-radius: 4px;
+}
+
+.rate-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+}
+
+.rate-item {
+    display: flex;
+    flex-direction: column;
+}
+
+.rate-val {
+    font-size: 16px;
+    font-weight: 800;
+    color: white;
+}
+
+.rate-val.good {
+    color: #34C759;
+}
+
+.rate-label {
+    font-size: 10px;
+    color: var(--text-secondary);
+    margin-top: 2px;
+}
+
+/* 14. JoyPal Module Tabs */
+.joypal-module-tabs {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 85px;
+    background: #1c1c1e;
+    display: flex;
+    padding: 10px 0 25px 0;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.joypal-module-tabs .tab-item {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.joypal-module-tabs .tab-item i {
+    font-size: 20px;
+}
+
+.joypal-module-tabs .tab-item span {
+    font-size: 11px;
+    font-weight: 700;
+}
+
+.joypal-module-tabs .tab-item.active {
+    color: var(--joypal-accent);
+}
+
+/* 15. Profile Detail (Hồ sơ của tôi) */
+.profile-header-alt {
+    padding: 30px 20px;
+    text-align: center;
+    background: #111;
+}
+
+.profile-header-alt .avatar {
+    width: 90px;
+    height: 90px;
+    border-radius: 50%;
+    border: 3px solid var(--joypal-accent);
+    margin-bottom: 15px;
+}
+
+.profile-header-alt .name {
+    font-size: 22px;
+    font-weight: 800;
+    color: white;
+}
+
+.profile-header-alt .joined {
+    font-size: 13px;
+    color: var(--text-secondary);
+    margin-top: 5px;
+}
+
+.rating-analytics-card {
+    margin: 0 20px;
+    background: #1c1c1e;
+    border-radius: 20px;
+    padding: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.rating-main .val {
+    display: block;
+    font-size: 36px;
+    font-weight: 800;
+    color: white;
+}
+
+.rating-main .label {
+    font-size: 13px;
+    color: var(--text-secondary);
+    font-weight: 600;
+}
+
+.rating-bars {
+    flex: 1;
+    margin-left: 30px;
+}
+
+.rating-bar-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 4px;
+}
+
+.rating-bar-row span {
+    font-size: 10px;
+    color: var(--text-secondary);
+    width: 8px;
+}
+
+.rating-bar-row .track {
+    flex: 1;
+    height: 4px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 2px;
+}
+
+.rating-bar-row .fill {
+    height: 100%;
+    background: #FFD700;
+    border-radius: 2px;
+}
+
+.joypal-profile-tabs {
+    display: flex;
+    gap: 25px;
+    padding: 20px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.joypal-profile-tabs span {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--text-secondary);
+    cursor: pointer;
+    position: relative;
+}
+
+.joypal-profile-tabs span.active {
+    color: white;
+}
+
+.joypal-profile-tabs span.active::after {
+    content: '';
+    position: absolute;
+    bottom: -20px;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: var(--joypal-accent);
+}
+
+.badge-card {
+    background: #1c1c1e;
+    border-radius: 16px;
+    padding: 15px;
+    display: flex;
+    gap: 15px;
+    align-items: center;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.badge-info .title {
+    font-size: 14px;
+    font-weight: 700;
+    color: white;
+}
+
+.badge-info .desc {
+    font-size: 12px;
+    color: var(--text-secondary);
+    margin: 4px 0 8px 0;
+}
+
+.badge-info a {
+    font-size: 12px;
+    color: var(--joypal-accent);
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.customer-feedback-section {
+    padding: 20px;
+}
+
+.customer-feedback-section h4 {
+    font-size: 16px;
+    font-weight: 800;
+    color: white;
+    margin-bottom: 15px;
+}
+
+.review-empty {
+    text-align: center;
+    padding: 40px 0;
+    color: var(--text-secondary);
+}
+
+.review-empty i {
+    font-size: 40px;
+    margin-bottom: 15px;
+    opacity: 0.3;
+}
+
+/* 16. Notifications */
+.notification-item {
+    display: flex;
+    padding: 20px;
+    gap: 15px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    cursor: pointer;
+}
+
+.notification-item.unread {
+    background: rgba(0, 137, 123, 0.03);
+}
+
+.notification-item .noti-icon {
+    width: 40px;
+    height: 40px;
+    background: rgba(255, 215, 0, 0.1);
+    color: #FFD700;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    flex-shrink: 0;
+}
+
+.noti-body .title {
+    font-size: 14px;
+    font-weight: 700;
+    color: white;
+}
+
+.noti-body .text {
+    font-size: 13px;
+    color: var(--text-secondary);
+    margin: 5px 0;
+    line-height: 1.4;
+}
+
+.noti-body .time {
+    font-size: 11px;
+    color: var(--text-secondary);
+    opacity: 0.5;
+}
+
+.mb-2 {
+    margin-bottom: 10px;
+}
+
+.mt-3 {
+    margin-top: 20px;
+}
+
+/* Static map is now a div with SVG content */
+#joypal-map-static {
+    width: 100%;
+    height: 100%;
+    display: none;
+    position: relative;
+    overflow: hidden;
+}
+
+#joypal-map-static.active {
+    display: block;
+}
+
+/* =============================================== */
+/* === JOB OFFER OVERLAY ========================= */
+/* =============================================== */
+.job-offer-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.55);
+    backdrop-filter: blur(4px);
+    z-index: 50;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    padding-bottom: 0;
+    animation: fadeInOverlay 0.3s ease;
+}
+
+@keyframes fadeInOverlay {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+.job-offer-card {
+    background: #1c1c1e;
+    border-radius: 28px 28px 0 0;
+    width: 100%;
+    padding: 0 0 34px 0;
+    box-shadow: 0 -10px 50px rgba(0, 0, 0, 0.6);
+    animation: slideUpCard 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes slideUpCard {
+    from {
+        transform: translateY(100%);
+    }
+
+    to {
+        transform: translateY(0);
+    }
+}
+
+.job-offer-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 18px 20px 14px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+.job-offer-badge {
+    background: linear-gradient(135deg, #004D40, #00897B);
+    color: white;
+    font-size: 13px;
+    font-weight: 800;
+    padding: 6px 14px;
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    letter-spacing: 0.3px;
+}
+
+.job-offer-timer {
+    width: 44px;
+    height: 44px;
+    border: 3px solid #E64A19;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    font-weight: 800;
+    color: #E64A19;
+    animation: timerPulse 1s ease-in-out infinite;
+}
+
+@keyframes timerPulse {
+
+    0%,
+    100% {
+        border-color: #E64A19;
+        color: #E64A19;
+    }
+
+    50% {
+        border-color: #ff6b6b;
+        color: #ff6b6b;
+    }
+}
+
+.job-offer-body {
+    padding: 16px 20px;
+}
+
+.job-client-info {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 18px;
+}
+
+.job-client-avatar {
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    border: 2px solid rgba(0, 137, 123, 0.5);
+    object-fit: cover;
+}
+
+.job-client-details {
+    flex: 1;
+}
+
+.job-client-name {
+    font-size: 17px;
+    font-weight: 800;
+    color: white;
+    margin-bottom: 4px;
+}
+
+.job-client-addr {
+    font-size: 13px;
+    color: var(--text-secondary);
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.job-earn-badge {
+    background: rgba(52, 199, 89, 0.15);
+    color: #34C759;
+    font-size: 18px;
+    font-weight: 900;
+    padding: 8px 14px;
+    border-radius: 14px;
+    border: 1px solid rgba(52, 199, 89, 0.25);
+}
+
+.job-offer-details {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 12px;
+    background: rgba(255, 255, 255, 0.04);
+    border-radius: 16px;
+    padding: 14px;
+    border: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+.job-detail-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    text-align: center;
+}
+
+.job-detail-item>i {
+    font-size: 16px;
+    color: var(--joypal-accent);
+}
+
+.detail-label {
+    font-size: 10px;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.detail-val {
+    font-size: 14px;
+    font-weight: 700;
+    color: white;
+}
+
+.job-offer-actions {
+    display: flex;
+    gap: 12px;
+    padding: 16px 20px 0;
+}
+
+.btn-decline {
+    flex: 1;
+    background: rgba(255, 59, 48, 0.12);
+    color: #FF3B30;
+    border: 1.5px solid rgba(255, 59, 48, 0.3);
+    border-radius: 18px;
+    padding: 16px;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: all 0.2s;
+}
+
+.btn-decline:active {
+    transform: scale(0.96);
+}
+
+.btn-accept {
+    flex: 2;
+    background: linear-gradient(135deg, #00897B, #004D40);
+    color: white;
+    border: none;
+    border-radius: 18px;
+    padding: 16px;
+    font-size: 16px;
+    font-weight: 800;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    box-shadow: 0 6px 20px rgba(0, 137, 123, 0.4);
+    transition: all 0.2s;
+    letter-spacing: 0.3px;
+}
+
+.btn-accept:active {
+    transform: scale(0.96);
+}
+
+/* =============================================== */
+/* === SERVICE TYPE MODAL ======================== */
+/* =============================================== */
+.service-modal-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(5px);
+    z-index: 50;
+    display: flex;
+    align-items: flex-end;
+}
+
+.service-modal-card {
+    background: #1c1c1e;
+    border-radius: 28px 28px 0 0;
+    width: 100%;
+    padding-bottom: 34px;
+    animation: slideUpCard 0.3s ease;
+}
+
+.service-modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 20px 14px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+.service-modal-header h3 {
+    font-size: 18px;
+    font-weight: 800;
+    color: white;
+}
+
+.service-modal-header>i {
+    font-size: 18px;
+    color: var(--text-secondary);
+    cursor: pointer;
+    padding: 4px;
+}
+
+.service-type-list {
+    padding: 10px 0;
+}
+
+.service-type-item {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 14px 20px;
+    cursor: pointer;
+    transition: background 0.15s;
+}
+
+.service-type-item:active {
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.svc-icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    flex-shrink: 0;
+}
+
+.svc-info {
+    flex: 1;
+}
+
+.svc-name {
+    font-size: 15px;
+    font-weight: 700;
+    color: white;
+    margin-bottom: 3px;
+}
+
+.svc-desc {
+    font-size: 12px;
+    color: var(--text-secondary);
+}
+
+.svc-arrow {
+    color: rgba(255, 255, 255, 0.25);
+    font-size: 13px;
+}
+
+/* =============================================== */
+/* === ACTIVE JOB SCREEN ======================== */
+/* =============================================== */
+#screen-joypal-job-detail {
+    padding: 0 !important;
+    overflow: hidden !important;
+    position: relative;
+    background: #f5f5f7;
+}
+
+#screen-joypal-job-detail.active {
+    display: block !important;
+}
+
+#active-job-map {
+    background: #e8ede9;
+    background-image:
+        linear-gradient(rgba(255, 255, 255, 0.5) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.5) 1px, transparent 1px);
+    background-size: 30px 30px;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Fake road lines on the map */
+#active-job-map::before {
+    content: '';
+    position: absolute;
+    top: 30%;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: rgba(255, 255, 255, 0.8);
+    box-shadow: 0 20px 0 rgba(255, 255, 255, 0.6), 0 50px 0 rgba(255, 255, 255, 0.5);
+}
+
+#active-job-map::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 35%;
+    width: 3px;
+    background: rgba(255, 255, 255, 0.7);
+    box-shadow: 40px 0 0 rgba(255, 255, 255, 0.5);
+}
+
+.active-job-card {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: #1c1c1e;
+    border-radius: 28px 28px 0 0;
+    padding: 22px 20px 34px;
+    z-index: 5;
+    box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.4);
+}
+
+.active-job-status-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 18px;
+}
+
+.active-job-status-badge {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(52, 199, 89, 0.12);
+    border: 1px solid rgba(52, 199, 89, 0.25);
+    padding: 8px 14px;
+    border-radius: 20px;
+}
+
+.active-job-status-badge span {
+    font-size: 13px;
+    font-weight: 700;
+    color: #34C759;
+}
+
+.status-dot-sm {
+    width: 8px;
+    height: 8px;
+    background: #34C759;
+    border-radius: 50%;
+    animation: statusPulse 1.5s infinite;
+    flex-shrink: 0;
+}
+
+.contact-btn {
+    width: 42px;
+    height: 42px;
+    background: rgba(0, 137, 123, 0.15);
+    border: 1px solid rgba(0, 137, 123, 0.3);
+    border-radius: 50%;
+    color: var(--joypal-accent);
+    font-size: 16px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.active-client-row {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 16px;
+}
+
+.active-client-avatar {
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    border: 2px solid rgba(0, 137, 123, 0.4);
+    object-fit: cover;
+}
+
+.active-client-name {
+    font-size: 17px;
+    font-weight: 800;
+    color: white;
+    margin-bottom: 5px;
+}
+
+.active-client-meta {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    color: var(--text-secondary);
+}
+
+.active-client-meta span:first-child {
+    background: rgba(0, 137, 123, 0.15);
+    color: var(--joypal-accent);
+    padding: 2px 10px;
+    border-radius: 10px;
+    font-weight: 600;
+}
+
+.active-address-card {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 16px;
+    padding: 14px 16px;
+    margin-bottom: 18px;
+}
+
+.address-pin {
+    width: 36px;
+    height: 36px;
+    background: rgba(0, 137, 123, 0.15);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--joypal-accent);
+    font-size: 16px;
+    flex-shrink: 0;
+}
+
+.address-info {
+    flex: 1;
+}
+
+.address-label {
+    font-size: 11px;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.address-val {
+    font-size: 14px;
+    font-weight: 600;
+    color: white;
+    margin-top: 3px;
+}
+
+.address-eta {
+    font-size: 13px;
+    font-weight: 700;
+    color: #34C759;
+    background: rgba(52, 199, 89, 0.1);
+    padding: 4px 10px;
+    border-radius: 10px;
+}
+
+.btn-arrived {
+    width: 100%;
+    background: linear-gradient(135deg, #1565C0, #0D47A1);
+    color: white;
+    border: none;
+    border-radius: 18px;
+    padding: 18px;
+    font-size: 16px;
+    font-weight: 800;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    box-shadow: 0 6px 20px rgba(21, 101, 192, 0.35);
+    letter-spacing: 0.3px;
+    transition: transform 0.15s;
+}
+
+.btn-arrived:active {
+    transform: scale(0.97);
+}
+
+.btn-complete {
+    width: 100%;
+    background: linear-gradient(135deg, #2E7D32, #1B5E20);
+    color: white;
+    border: none;
+    border-radius: 18px;
+    padding: 18px;
+    font-size: 16px;
+    font-weight: 800;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    box-shadow: 0 6px 20px rgba(46, 125, 50, 0.35);
+    letter-spacing: 0.3px;
+    transition: transform 0.15s;
+}
+
+.btn-complete:active {
+    transform: scale(0.97);
+}
+
+.job-timer-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 14px;
+    padding: 12px 16px;
+    margin-bottom: 14px;
+    font-size: 14px;
+    color: var(--text-secondary);
+}
+
+.job-timer-row strong {
+    color: white;
+    font-size: 15px;
+}
+
+/* Info card improvement */
+.sheet-info-card .info-content {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.sheet-info-card .info-content i {
+    font-size: 16px;
+    margin-bottom: 2px;
+}
+
+
+/* =============================================== */
+/* === DEMAND HEATMAP STYLES ===================== */
+/* =============================================== */
+.demand-circle {
+    pointer-events: none;
+    animation: heatmapPulse 3s infinite ease-in-out;
+}
+
+@keyframes heatmapPulse {
+    0% {
+        fill-opacity: 0.15;
+        stroke-opacity: 0.2;
+    }
+
+    50% {
+        fill-opacity: 0.4;
+        stroke-opacity: 0.5;
+    }
+
+    100% {
+        fill-opacity: 0.15;
+        stroke-opacity: 0.2;
+    }
+}
+
+/* =============================================== */
+/* === SPLIT SCREEN JOB TRACKING & CHAT ========== */
+/* =============================================== */
+#screen-joypal-job-detail.screen {
+    background: #000;
+}
+
+#screen-joypal-job-detail.split-view .active-job-map-container {
+    height: 45% !important;
+}
+
+#screen-joypal-job-detail.split-view .active-job-card {
+    height: 55%;
+    border-radius: 30px 30px 0 0;
+    padding: 20px 15px;
+    /* Better padding */
+    display: flex;
+    flex-direction: column;
+}
+
+.active-job-status-row {
+    padding-bottom: 15px;
+}
+
+.active-client-row {
+    margin-bottom: 20px;
+    background: rgba(255, 255, 255, 0.05);
+    /* Slight separation */
+    padding: 10px;
+    border-radius: 15px;
+}
+
+.job-chat-container {
+    flex: 1;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 20px;
+    margin-bottom: 15px;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.job-chat-header {
+    padding: 12px 20px;
+    background: rgba(255, 255, 255, 0.03);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.job-chat-header span {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--text-secondary);
+}
+
+.job-chat-messages {
+    flex: 1;
+    padding: 15px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.chat-bubble {
+    max-width: 80%;
+    padding: 10px 14px;
+    border-radius: 18px;
+    font-size: 14px;
+    line-height: 1.5;
+    position: relative;
+}
+
+.chat-bubble.client {
+    align-self: flex-start;
+    background: #2c2c2e;
+    color: white;
+    border-bottom-left-radius: 4px;
+}
+
+.chat-bubble.joypal {
+    align-self: flex-end;
+    background: var(--joypal-accent);
+    color: white;
+    border-bottom-right-radius: 4px;
+}
+
+.chat-bubble .time {
+    font-size: 9px;
+    opacity: 0.5;
+    margin-top: 4px;
+    display: block;
+    text-align: right;
+}
+
+.job-chat-input-area {
+    padding: 12px 15px 30px;
+    background: #1c1c1e;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.job-chat-input {
+    flex: 1;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 20px;
+    padding: 10px 15px;
+    color: white;
+    font-size: 14px;
+    outline: none;
+}
+
+.btn-send-chat {
+    width: 36px;
+    height: 36px;
+    background: var(--joypal-accent);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    cursor: pointer;
+}
+
+/* Profile Feedback List */
+.feedback-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-top: 10px;
+}
+
+.feedback-card {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 16px;
+    padding: 15px;
+}
+
+.feedback-card-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 8px;
+}
+
+.feedback-card-header .user {
+    font-weight: 700;
+    font-size: 13px;
+}
+
+.feedback-card-header .stars {
+    color: #FFD700;
+    font-size: 10px;
+}
+
+.feedback-card .comment {
+    font-size: 13px;
+    color: var(--text-secondary);
+    line-height: 1.5;
+}
+
+/* 11. Withdrawal System Styles */
+.method-chip {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 16px;
+    padding: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    color: var(--text-secondary);
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.method-chip.active {
+    background: rgba(0, 122, 255, 0.1);
+    border-color: var(--primary-blue);
+    color: white;
+    box-shadow: 0 4px 15px rgba(0, 122, 255, 0.2);
+}
+
+.method-chip i {
+    font-size: 16px;
+}
+
+.method-details-container {
+    margin-top: 15px;
+}
+
+.glass-input-group select,
+.glass-input-group input {
+    width: 100%;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: white;
+    padding: 14px;
+    border-radius: 16px;
+    font-size: 14px;
+    outline: none;
+    transition: all 0.3s ease;
+}
+
+.glass-input-group select:focus,
+.glass-input-group input:focus {
+    border-color: var(--primary-blue);
+    background: rgba(255, 255, 255, 0.05);
+    box-shadow: 0 0 15px rgba(0, 122, 255, 0.1);
+}
+
+.wallet-action-btn:active {
+    transform: scale(0.95);
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(5px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Animations for modal */
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
